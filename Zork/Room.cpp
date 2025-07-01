@@ -1,56 +1,113 @@
 #include "Room.h"
 
-Room::Room(int id, string name, string description, vector<int> exits, vector<Item> items, vector<Person> people, vector<Interactable> interactables)
+Room::Room(string _name, string _description, Room* _exits[6], vector<Item> _items, vector<Person> _people, vector<Interactable> _interactables, bool _dark)
 {
-}
-
-int Room::GetId()
-{
-	return 0;
+	name = _name;
+	description  = _description;
+	exits = _exits;
+	items = _items;
+	people = _people;
+	interactables = _interactables;
+	dark = _dark;
 }
 
 string Room::GetName()
 {
-	return string();
+	return name;
 }
 
 string Room::GetDescription()
 {
-	return string();
+	return description;
 }
 
 bool Room::ValidExit(string _exit)
-{
-	return false;
+{	
+	if (exitNames.find(_exit) == exitNames.end()) 
+	{
+		return false;
+	}
+	else 
+	{
+		int roomIndex = exitNames[_exit];
+		
+		if (exits[roomIndex] = nullptr) 
+		{
+			return false;
+		}
+		else 
+		{
+			Move(exits[roomIndex]);
+			return true;
+		}
+	}
+
+	
 }
 
-bool Room::ValidItem(string _item)
+Item* Room::ValidItem(string _item)
 {
-	return false;
+	for (int i = 0; i < items.size(); i++) {
+		if (_item == items[i]->name) {
+			return items[i];
+		}
+	}
+	return nullptr;
 }
 
-bool Room::ValidPeople(string _person)
+Person* Room::ValidPeople(string _person)
 {
-	return false;
+	for (int i = 0; i < people.size(); i++) {
+		if (_person == people[i]->name) {
+			return people[i];
+		}
+	}
+	return nullptr;
 }
 
 bool Room::ValidInteraction(string _interactable)
 {
+	for (int i = 0; i < interactables.size(); i++) {
+		if (_interactable == interactables[i]->name) {
+			return true;
+		}
+	}
 	return false;
 }
 
-void Room::AddToScene(Item _item)
+void Room::AddToScene(Item* _item)
 {
+	items.push_back(_item);
 }
 
-void Room::DropFromScene(string _item)
+void Room::AddToScene(Person* _person)
 {
+	people.push_back(_person);
 }
 
-void Room::ActivateInteractable(Interactable _interactable)
+void Room::DropFromScene(Item* _item)
 {
+	for (int i = 0; i < items.size(); i++) {
+		_item = items[i];
+	}
 }
 
-void Room::AddToScene(Person _person)
+void Room::DropFromScene(Person* _person)
 {
+	for (int i = 0; i < items.size(); i++) {
+		_person = people[i];
+	}
 }
+
+void Room::ActivateInteractable(Interactable* _interactable)
+{
+	//TODO
+}
+
+void Room::Move(Room* _room)
+{
+	//TODO
+}
+
+
+
