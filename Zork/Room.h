@@ -1,9 +1,6 @@
 #pragma once
-#include <string>
 #include <vector>
-#include <map>
 #include "Object.h"
-using namespace std;
 
 class Room : public Object
 {
