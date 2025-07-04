@@ -139,11 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-	<ClCompile Include="Room.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Room.cpp" />
     <ClCompile Include="Zork.cpp" />
   </ItemGroup>
   <ItemGroup>
-	<ClInclude Include="Room.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Room.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

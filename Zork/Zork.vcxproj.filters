@@ -13,10 +13,14 @@
     <ClCompile Include="Room.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Room.h">
       <Filter>Archivos de origen</Filter>
     </ClInclude>
+    <ClInclude Include="Object.h" />
   </ItemGroup>
 </Project>
