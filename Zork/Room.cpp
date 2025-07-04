@@ -1,9 +1,10 @@
 #include "Room.h"
 
-Room::Room(string _name, string _description, int _type, vector<Object*> _roomObjects, bool _isDark) : Object(_name, _description, _type)
+Room::Room(string _name, string _description, vector<Object*> _roomObjects, bool _isDark) : Object(_name, _description)
 {
 	roomObjects = _roomObjects;
 	isDark = _isDark;
+	type = ROOM;
 }
 
 bool Room::IsDark()

@@ -9,10 +9,10 @@ enum NPCStates
 	FOLLOWING
 };
 
-class NPC : public Object
+class Npc : public Object
 {
 public:
-	NPC(string _name, string _description, int _type, Object* _trigger, vector<string*> _dialogs);
+	Npc(string _name, string _description, Object* _trigger, vector<string*> _dialogs);
 
 	int getState();
 	string getDialog();

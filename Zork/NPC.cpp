@@ -1,22 +1,24 @@
 #include "NPC.h"
 
-NPC::NPC(string _name, string _description, int _type, Object* _trigger, vector<string*> _dialogs) : Object(_name, _description, _type)
+Npc::Npc(string _name, string _description, Object* _trigger, vector<string*> _dialogs) : Object(_name, _description)
 {
     trigger = _trigger;
     dialogs = _dialogs;
+    type = NPC;
+    state = DEFAULT;
 }
 
-int NPC::getState()
+int Npc::getState()
 {
     return state;
 }
 
-string NPC::getDialog()
+string Npc::getDialog()
 {
     return currentDialog;
 }
 
-void NPC::changeState()
+void Npc::changeState()
 {
     switch (state) {
     case DEFAULT:
@@ -36,7 +38,7 @@ void NPC::changeState()
 
 }
 
-bool NPC::Trigger(string _triggerName)
+bool Npc::Trigger(string _triggerName)
 {
     if (trigger->GetName() == _triggerName)
     {

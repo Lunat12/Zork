@@ -5,7 +5,7 @@
 class Room : public Object
 {
 public:
-	Room(string _name, string _description, int _type, vector<Object*> _roomObjects, bool _isDark);
+	Room(string _name, string _description, vector<Object*> _roomObjects, bool _isDark);
 
 	bool IsDark();
 	

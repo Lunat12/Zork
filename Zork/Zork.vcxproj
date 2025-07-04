@@ -139,11 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Exit.cpp" />
+    <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="Zork.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Exit.h" />
+    <ClInclude Include="NPC.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Room.h" />
   </ItemGroup>

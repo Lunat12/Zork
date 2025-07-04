@@ -16,22 +16,23 @@ enum ObjectTypes
 class Object
 {
 public:
-	Object(string _name, string _description, int _type);
+	Object(string _name, string _description);
 
 	string GetName();
 	string GetDescription();
 	int GetType();
 	void SaveObject(Object* _object);
-	void DropObject(Object* _object);
+	bool DropObject(string _object);
 
 protected:
 	vector<Object*> inventory;
+	int type;
 
 private:
 
 	string name;
 	string description;
-	int type;
+	
 
 };
 
