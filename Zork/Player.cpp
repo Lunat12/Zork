@@ -4,6 +4,7 @@ Player::Player(Room* _currentRoom) : Object("Me", "You look exactly as you did t
 {
 	currentRoom = _currentRoom;
 	type = PC;
+	isHearing = true;
 }
 
 bool Player::SaveObject(string _object)
@@ -51,4 +52,9 @@ bool Player::GoNextRoom(int _dir)
 	//TODO: ACTIVATE IS VISITED
 	//TODO: READ DESCRIPTION
 	return true;
+}
+
+void Player::SetMute()
+{
+	isHearing = false;
 }

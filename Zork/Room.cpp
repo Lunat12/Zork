@@ -17,6 +17,11 @@ bool Room::IsDark()
 	return isDark;
 }
 
+void Room::SetLight()
+{
+	isDark = false;
+}
+
 bool Room::IsVisited()
 {
 	if (isVisited)

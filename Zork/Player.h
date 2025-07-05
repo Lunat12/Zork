@@ -10,11 +10,12 @@ public:
 	bool SaveObject(string _object) override;
 	bool SaveObject(string _object, string _parent, string _recipient) override;
 	bool GoNextRoom(int _dir);
+	void SetMute();
 
 
 private:
 
 	Room* currentRoom;
-	
+	bool isHearing;
 };
 
