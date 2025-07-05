@@ -1,11 +1,12 @@
 #include "GameControl.h"
 using namespace std;
 
-GameControl::GameControl()
+GameControl::GameControl(World _world)
 {
+	//TODO: SEARCH FOR PLAYER IN WORLD
+
 	controls["GO"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
-		return false;
+		_player->GoNextRoom(directions[_command[1]]);
     };
 	controls["STORE"] = [&](vector<string> _command) -> bool {
 		cout << "test\n";
@@ -43,6 +44,13 @@ GameControl::GameControl()
 		cout << "test\n";
 		return false;
 	};
+
+	directions["NORTH"] = 0;
+	directions["SOUTH"] = 1;
+	directions["EAST"]  = 2;
+	directions["WEST"]  = 3;
+	directions["UP"]    = 4;
+	directions["DOWN"]  = 5;
 }
 
 void GameControl::GetCommand()

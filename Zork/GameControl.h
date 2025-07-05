@@ -4,12 +4,13 @@
 #include <vector>
 #include <map>
 #include <functional>
+#include "Player.h"
 using namespace std;
 
 class GameControl
 {
 public:
-	GameControl();
+	GameControl(World* _world);
 
 	void GetCommand();
 	vector<string> ParseInput(string _input);
@@ -18,6 +19,8 @@ public:
 private:
 
 	map<string, function<bool(vector<string>)>> controls;
-
+	map<string, int> directions;
+	Player* player;
+	World* world;
 };
 
