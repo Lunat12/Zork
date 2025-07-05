@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "Room.h"
 #include "Player.h"
+#include "Enemy.h"
 
 enum Spells
 {

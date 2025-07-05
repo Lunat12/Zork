@@ -39,7 +39,9 @@ void Spell::CreateLight(Object* _objective)
 
 void Spell::HypnosDream(Object* _objective)
 {
-    //TODO: Come back after creating anemy class.
+    Enemy* _enemy = dynamic_cast<Enemy*>(_objective);
+
+    _enemy->makeSleep();
 }
 
 void Spell::Mute(Object* _objective)
