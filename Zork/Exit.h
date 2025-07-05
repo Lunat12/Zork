@@ -2,6 +2,8 @@
 #include "Object.h"
 #include "Room.h"
 
+class Room;
+
 enum ExitTypes
 {
 	NORTH,
@@ -19,9 +21,10 @@ public:
 	Exit(string _name, string _description, int _exitType, Room* _next);
 
 
-	int getExitType();
-	bool Trigger(string _triggerName);
+	int GetExitType();
+	bool Trigger(string _triggerName, Object* _parent);
 	Room* GetNext();
+	bool SaveObject(string _object, Object* _parent) override;
 	
 
 private:

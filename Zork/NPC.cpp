@@ -38,15 +38,30 @@ void Npc::changeState()
 
 }
 
-bool Npc::Trigger(string _triggerName)
+bool Npc::Trigger(string _triggerName, Object* _player)
 {
     if (trigger->GetName() == _triggerName)
     {
         changeState();
-        inventory.push_back(trigger);
+        SaveObject(_triggerName, _player);
         //TODO: print dialog 1 directly
         return true;
     }
 
     return false; 
+}
+
+bool Npc::SaveObject(string _object, Object* _parent)
+{
+    if (state = DEFAULT) return Trigger(_object, _parent);
+
+    Object* _currentObject = _parent->ValidateObject(_object);
+
+    if (_currentObject != nullptr)
+    {
+        _parent->DropObject(_object);
+        inventory.push_back(_currentObject);
+        return true;
+    }
+    return false;
 }

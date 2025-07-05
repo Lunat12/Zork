@@ -18,17 +18,17 @@ Exit::Exit(string _name, string _description, int _exitType, Room* _next) : Obje
     trigger = nullptr;
 }
 
-int Exit::getExitType()
+int Exit::GetExitType()
 {
 	return exitType;
 }
 
-bool Exit::Trigger(string _triggerName)
+bool Exit::Trigger(string _triggerName, Object* _parent)
 {
     if (trigger->GetName() == _triggerName)
     {
         isActive = true;
-        inventory.push_back(trigger);
+        SaveObject(_triggerName, _parent);
         //TODO: print mesage of opening?
         return true;
     }
@@ -39,4 +39,19 @@ bool Exit::Trigger(string _triggerName)
 Room* Exit::GetNext()
 {
     return next;
+}
+
+bool Exit::SaveObject(string _object, Object* _parent)
+{
+    if (!isActive) return Trigger(_object, _parent);
+
+    Object* _currentObject = _parent->ValidateObject(_object);
+
+    if (_currentObject != nullptr)
+    {
+        _parent->DropObject(_object);
+        inventory.push_back(_currentObject);
+        return true;
+    }
+    return false;
 }

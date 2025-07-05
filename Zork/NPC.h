@@ -16,7 +16,8 @@ public:
 
 	int getState();
 	string getDialog();
-	bool Trigger(string _triggerName);
+	bool Trigger(string _triggerName, Object* _player);
+	bool SaveObject(string _object, Object* _parent) override;
 	
 
 private:
