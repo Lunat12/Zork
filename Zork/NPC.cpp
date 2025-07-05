@@ -35,7 +35,6 @@ void Npc::changeState()
         break;
  
     }
-
 }
 
 bool Npc::Trigger(string _triggerName, Object* _player)

@@ -5,7 +5,6 @@ Object::Object(string _name, string _description)
 	name = _name;
 	description = _description;
 	type = ITEM;
-
 }
 
 string Object::GetName()

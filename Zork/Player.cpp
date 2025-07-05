@@ -28,7 +28,6 @@ bool Player::SaveObject(string _object)
 		return true;
 	}
 	return false;
-	
 }
 
 bool Player::SaveObject(string _object, string _parent, string _recipient)
