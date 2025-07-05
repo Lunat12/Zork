@@ -1,14 +1,18 @@
 #include <iostream>
-#include "NPC.h"
+#include "Globals.h"
+#include "GameControl.h"
+using namespace std;
 
 int main()
 {
-	Object gafas = Object("Gafas", "Gafas de miopia.");
-	vector<string*> dialogos = {new string("aaaaaaaaaaaaaa"), new string("bbbbbbbbbbbbbbb"), new string("ccccccccccccccccccc"), new string("bbbbbbbbbbbbbbb") };
-	Npc pepe = Npc("Pepe", "Señoro Miope.", &gafas, dialogos);
+	GameControl gameControl;
 
+	while(!global_end) 
+	{
+		gameControl.GetCommand();
+	}
 
-	cout << pepe.GetType();   
-	cout << gafas.GetType();
+	//TODO: CALCULATE POINTS
 
+	cout << "Thanks for playing!";
 }
