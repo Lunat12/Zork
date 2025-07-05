@@ -4,6 +4,7 @@ Spell::Spell(string _name, string _description, int _spell, int _objectiveType) 
 {
     spell = _spell;
     objectiveType = _objectiveType;
+    type = SPELL;
 }
 
 
