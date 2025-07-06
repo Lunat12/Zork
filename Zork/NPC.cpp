@@ -18,8 +18,10 @@ string Npc::getDialog()
     return currentDialog;
 }
 
-void Npc::changeState()
+void Npc::ChangeState(Object* _playerObj)
 {
+    Player* _player = dynamic_cast<Player*>(_playerObj);
+
     switch (state) {
     case DEFAULT:
         currentDialog = *dialogs[0];
@@ -27,11 +29,15 @@ void Npc::changeState()
         break;
     case ACTIVE:
         currentDialog = *dialogs[2];
+        Object::SaveObject(GetName(), _player->GetCurrentRoom()->GetName(), _player->GetName());
         state = FOLLOWING;
+        cout << GetName() << " now follows you!";
         break;
     case FOLLOWING:
         currentDialog = *dialogs[3];
+        Object::SaveObject(GetName(), _player->GetName(), _player->GetCurrentRoom()->GetName());
         state = ACTIVE;
+        cout << GetName() << " will be waiting here.";
         break;
     }
 }
@@ -40,9 +46,9 @@ bool Npc::Trigger(string _triggerName, Object* _player)
 {
     if (trigger->GetName() == _triggerName)
     {
-        changeState();
+        ChangeState(_player);
         SaveObject(_triggerName, _player);
-        //TODO: print dialog 1 directly
+        cout << *dialogs[1] << "\n";
         return true;
     }
 

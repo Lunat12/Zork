@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
+#include <iostream>
 #include "Object.h"
+#include "Player.h"
+using namespace std;
 
 enum NPCStates 
 {
@@ -18,7 +21,7 @@ public:
 	string getDialog();
 	bool Trigger(string _triggerName, Object* _player);
 	bool SaveObject(string _object, Object* _parent) override;
-	
+	void changeState(Object* _player);
 
 private:
 
@@ -26,6 +29,5 @@ private:
 	Object* trigger;
 	int state;
 	vector<string*> dialogs;
-	void changeState();
 };
 

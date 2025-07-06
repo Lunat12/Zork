@@ -6,6 +6,7 @@
 #include <functional>
 #include "Player.h"
 #include "Globals.h"
+#include "NPC.h"
 using namespace std;
 
 class GameControl

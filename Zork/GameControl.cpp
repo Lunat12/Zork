@@ -153,7 +153,42 @@ GameControl::GameControl(World* _world)
 		return false;
 	};
 	controls["SPEAK"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
+
+		if (_command.size() == 3) 
+		{
+			Object* _object = player->GetCurrentRoom()->ValidateObject(_command[2]);
+			if (_object != nullptr && _object->GetType() == NPC)
+			{
+				Npc* _npc = dynamic_cast<Npc*>(_object);
+
+				cout << _npc->getDialog() << "\n";
+				if (_npc->getState() != DEFAULT) 
+				{
+					cout << "<<Type YES or NO.>>\n";
+					string _input;
+					getline(cin, _input);
+					_input = InputToUpper(_input);
+
+					if (_input == "YES") 
+					{
+						_npc->ChangeState(player);
+						return true;
+						
+					}
+					else if (_input == "NO") 
+					{
+						cout << _npc->GetName() << " says: Ok!";
+						return true;
+					}
+					cout << _npc->GetName() << " could not make sense of what you said.\n";
+					return false;
+				}
+				return true;
+			}
+			cout << "You cannot talk to" << InputToNormalized(_command[2]) <<"\n";
+			return false;
+		}
+		cout << "Sorry nobody understood you";
 		return false;
 	};
 	controls["GIVE"] = [&](vector<string> _command) -> bool {
@@ -169,10 +204,6 @@ GameControl::GameControl(World* _world)
 		return false;
 	};
 	controls["CAST"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
-		return false;
-	};
-	controls["FILL"] = [&](vector<string> _command) -> bool {
 		cout << "test\n";
 		return false;
 	};
