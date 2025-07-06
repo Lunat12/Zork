@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Globals.h"
 #include "NPC.h"
+#include "Spell.h"
 using namespace std;
 
 class GameControl

@@ -321,15 +321,76 @@ GameControl::GameControl()
 		return false;
 	};
 	controls["CAST"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
+		if (_command.size() != 4)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+
+		Object* _spellObj = player->ValidateObject(_command[1]);
+		if (_spellObj == nullptr)
+		{
+			for (size_t i = 0; i < player->GetInventory()[NPC].size(); i++)
+			{
+				_spellObj = player->GetInventory()[NPC][i]->ValidateObject(_command[1]);
+				if (_spellObj != nullptr)
+				{
+					break;
+				}
+			}
+
+			if (_spellObj == nullptr)
+			{
+				cout << "Neither you or your party have that spell.\n";
+				return false;
+			}	
+		}
+
+		if (_spellObj->GetType() == SPELL) 
+		{
+			Spell* _spell;
+			_spell = dynamic_cast<Spell*>(_spellObj);
+
+			Object* _item = player->GetCurrentRoom()->ValidateObject(_command[3]);
+			if (_item != nullptr)
+			{
+				if (_spell->Cast(_item)) 
+				{
+					return true;
+				}
+			}
+
+			if (_command[3] == "ME" || _command[3] == "PARTY" || _command[3] == "PLAYER" || _command[3] == "NOISE")
+			{
+				if (_spell->Cast(player))
+				{
+					return true;
+				}
+			}
+
+			cout << "The spell didn't work.\n";
+			return false;
+			
+		}
+		cout << "That's not any spell you ever heard of.\n";
 		return false;
 	};
 	controls["VERBOSE"] = [&](vector<string> _command) -> bool {
+		if (_command.size() != 1)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
 		isVerbose = true;
 		cout << "Verbose mode activated. I will now read full descriptions of rooms.\n";
 		return false;
 	};
 	controls["BRIEF"] = [&](vector<string> _command) -> bool {
+		if (_command.size() != 1)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
 		cout << "Verbose mode deactivated. I will now only full descriptions of rooms you've never been to.\n";
 		return false;
 	};

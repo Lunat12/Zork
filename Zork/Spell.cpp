@@ -30,6 +30,7 @@ bool Spell::CreateLight(Object* _objective)
     if (_room != nullptr)
     {
         _room->SetLight();
+        cout << "You created light at the " << _room->GetName();
         return true;
     }
     return false;
@@ -42,6 +43,7 @@ bool Spell::HypnosDream(Object* _objective)
     if (_enemy != nullptr)
     {
         _enemy->makeSleep();
+        cout << "The " << _enemy->GetName() << " fell asleep.";
         return true;
     }
     return false;
@@ -54,6 +56,7 @@ bool Spell::Mute(Object* _objective)
     if (_player != nullptr)
     {
         _player->SetMute();
+        cout << "You cannot hear any loud noises anymore.";
         return true;
     }
     return false;
