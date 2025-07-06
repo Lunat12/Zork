@@ -11,13 +11,10 @@ GameControl::GameControl(World* _world)
 			if (player->GoNextRoom(directions[_command[1]])) 
 			{
 				Room* _currentRoom = player->GetCurrentRoom();
-				if (!isVerbose && _currentRoom->IsVisited())
-				{
-					cout << _currentRoom->GetName() + "\n";
-					return true;
-				}
 
 				cout << _currentRoom->GetName() + "\n";
+				if (!isVerbose && _currentRoom->IsVisited()) return true;
+				
 				cout << _currentRoom->GetDescription() + "\n";
 
 				for (size_t i = 0; i < _currentRoom->GetInventory()[ITEM].size(); i++)
@@ -208,11 +205,12 @@ GameControl::GameControl(World* _world)
 		return false;
 	};
 	controls["VERBOSE"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
+		isVerbose = true;
+		cout << "Verbose mode activated. I will now read full descriptions of rooms.\n";
 		return false;
 	};
 	controls["BRIEF"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
+		cout << "Verbose mode deactivated. I will now only full descriptions of rooms you've never been to.\n";
 		return false;
 	};
 
