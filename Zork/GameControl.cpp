@@ -6,40 +6,49 @@ GameControl::GameControl(World* _world)
 
 	controls["GO"] = [&](vector<string> _command) -> bool {
 
-		if (directions.find(_command[1]) != directions.end())
+		if (_command.size() == 2) 
 		{
-			if (player->GoNextRoom(directions[_command[1]])) 
+			if (directions.find(_command[1]) != directions.end())
 			{
-				Room* _currentRoom = player->GetCurrentRoom();
+				if (player->GoNextRoom(directions[_command[1]]))
+				{
+					Room* _currentRoom = player->GetCurrentRoom();
 
-				cout << _currentRoom->GetName() + "\n";
-				if (!isVerbose && _currentRoom->IsVisited()) return true;
-				
-				cout << _currentRoom->GetDescription() + "\n";
+					cout << _currentRoom->GetName() + "\n";
+					if (!isVerbose && _currentRoom->IsVisited()) return true;
 
-				for (size_t i = 0; i < _currentRoom->GetInventory()[ITEM].size(); i++)
-				{
-					cout << "There's an item here: " << _currentRoom->GetInventory()[ITEM][i]->GetName() << "\n";
-				}
-				for (size_t i = 0; i < _currentRoom->GetInventory()[NPC].size(); i++)
-				{
-					cout << "There's a person here: " << _currentRoom->GetInventory()[NPC][i]->GetName() << "\n";
-				}
-				for (size_t i = 0; i < _currentRoom->GetInventory()[ENEMY].size(); i++)
-				{
-					cout << "There's a " << _currentRoom->GetInventory()[ENEMY][i]->GetName() << " here.\n";
-				}
+					cout << _currentRoom->GetDescription() + "\n";
 
-				cout << "Exits:\n";
-				for (size_t i = 0; i < _currentRoom->GetInventory()[EXIT].size(); i++)
-				{
-					Exit* _currentExit;
-					_currentExit = dynamic_cast<Exit*>(_currentRoom->GetInventory()[EXIT][i]);
-					cout << "-" << _currentExit->GetExitType() << ": " << _currentExit->GetName() << "\n";
+					for (size_t i = 0; i < _currentRoom->GetInventory()[ITEM].size(); i++)
+					{
+						cout << "There's an item here: " << _currentRoom->GetInventory()[ITEM][i]->GetName() << "\n";
+					}
+					for (size_t i = 0; i < _currentRoom->GetInventory()[NPC].size(); i++)
+					{
+						cout << "There's a person here: " << _currentRoom->GetInventory()[NPC][i]->GetName() << "\n";
+					}
+					for (size_t i = 0; i < _currentRoom->GetInventory()[ENEMY].size(); i++)
+					{
+						cout << "There's a " << _currentRoom->GetInventory()[ENEMY][i]->GetName() << " here.\n";
+					}
+
+					cout << "Exits:\n";
+					for (size_t i = 0; i < _currentRoom->GetInventory()[EXIT].size(); i++)
+					{
+						Exit* _currentExit;
+						_currentExit = dynamic_cast<Exit*>(_currentRoom->GetInventory()[EXIT][i]);
+						cout << "-" << _currentExit->GetExitType() << ": " << _currentExit->GetName() << "\n";
+					}
+
+					return true;
 				}
+				cout << "You can't go there.\n";
+				return false;
 			}
+			cout << "You can't go there.\n";
+			return false;
 		}
-		cout << "You can't go there.\n";
+		cout << "You cannot do that.\n";
 		return false;
     };
 	controls["STORE"] = [&](vector<string> _command) -> bool {
@@ -230,7 +239,42 @@ GameControl::GameControl(World* _world)
 		return false;
 	};
 	controls["USE"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
+		if (_command.size() != 4)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+
+		Object* _container = player->GetCurrentRoom()->ValidateObject(_command[3]);
+		if (_container == nullptr)
+		{	
+			cout << "You can't use that here.\n";
+			return false;
+		}
+
+		if (_container->GetType() == EXIT)
+		{
+			Exit* _exit;
+			_exit = dynamic_cast<Exit*>(_container);
+
+			Object* _item = player->ValidateObject(_command[1]);
+			if (_item != nullptr)
+			{
+				if (_item->GetType() != ITEM)
+				{
+					cout << "It might not be a good idea to use that here.\n";
+					return false;
+				}
+				if (_exit->Trigger(_item->GetName(), player))
+				{
+					cout << "You used " << InputToNormalized(_command[1]) << " at the " << InputToNormalized(_command[3]) << ".\n";
+					return true;
+				}
+			}
+			cout << "You can't use something you don't have.\n";
+			return false;
+		}
+		cout << "You can't use that.\n";
 		return false;
 	};
 	controls["ASK"] = [&](vector<string> _command) -> bool {

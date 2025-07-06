@@ -21,7 +21,7 @@ public:
 	string getDialog();
 	bool Trigger(string _triggerName, Object* _player);
 	bool SaveObject(string _object, Object* _parent) override;
-	void changeState(Object* _player);
+	void ChangeState(Object* _player);
 
 private:
 

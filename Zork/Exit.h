@@ -1,6 +1,8 @@
 #pragma once
+#include <iostream>
 #include "Object.h"
 #include "Room.h"
+using namespace std;
 
 class Room;
 
@@ -24,7 +26,6 @@ public:
 	int GetExitType();
 	bool Trigger(string _triggerName, Object* _parent);
 	Room* GetNext();
-	bool SaveObject(string _object, Object* _parent) override;
 	bool IsActive();
 	
 

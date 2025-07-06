@@ -29,7 +29,7 @@ bool Exit::Trigger(string _triggerName, Object* _parent)
     {
         isActive = true;
         SaveObject(_triggerName, _parent);
-        //TODO: print mesage of opening?
+        cout << "You can now go trough " << GetName();
         return true;
     }
 
@@ -39,21 +39,6 @@ bool Exit::Trigger(string _triggerName, Object* _parent)
 Room* Exit::GetNext()
 {
     return next;
-}
-
-bool Exit::SaveObject(string _object, Object* _parent)
-{
-    if (!isActive) return Trigger(_object, _parent);
-
-    Object* _currentObject = _parent->ValidateObject(_object);
-
-    if (_currentObject != nullptr)
-    {
-        _parent->DropObject(_object);
-        inventory.push_back(_currentObject);
-        return true;
-    }
-    return false;
 }
 
 bool Exit::IsActive()
