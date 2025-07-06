@@ -133,7 +133,23 @@ GameControl::GameControl(World* _world)
 		return false;
 	};
 	controls["DROP"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
+		if (_command.size() != 2) 
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+		Object* _item = player->ValidateObject(_command[1]);
+		if (_item == nullptr) 
+		{
+			cout << "You don't even have that item.\n";
+			return false;
+		}
+		if (_item->GetType() == ITEM && player->GetCurrentRoom()->SaveObject(_command[1], player))
+		{
+			cout << "You dropped " << InputToNormalized(_command[1]) << ".\n";
+			return true;
+		}
+		cout << "You cannot drop that.\n";
 		return false;
 	};
 	controls["SPEAK"] = [&](vector<string> _command) -> bool {
@@ -149,10 +165,6 @@ GameControl::GameControl(World* _world)
 		return false;
 	};
 	controls["ASK"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
-		return false;
-	};
-	controls["DROP"] = [&](vector<string> _command) -> bool {
 		cout << "test\n";
 		return false;
 	};
