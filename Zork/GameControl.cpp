@@ -1,6 +1,6 @@
 #include "GameControl.h"
 
-GameControl::GameControl(World* _world)
+GameControl::GameControl()
 {
 	//TODO: SEARCH FOR PLAYER IN WORLD
 
@@ -278,7 +278,46 @@ GameControl::GameControl(World* _world)
 		return false;
 	};
 	controls["ASK"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
+		if (_command.size() != 4)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+
+		Object* _parent = player->ValidateObject(_command[1]);
+		if (_parent == nullptr)
+		{
+			_parent = player->GetCurrentRoom()->ValidateObject(_command[1]);
+
+			if (_parent == nullptr)
+			{
+				cout << "You can't ask someone who's not here to give you anything.\n";
+				return false;
+			}
+		}
+
+		if (_parent->GetType() == NPC)
+		{
+			Object* _item = _parent->ValidateObject(_command[3]);
+			if (_item != nullptr)
+			{
+				if (_item->GetType() != ITEM || player->hasItemAllready())
+				{
+					cout << _parent->GetName() << " says: You can not carry that.\n";
+					return false;
+				}
+				if (player->Object::SaveObject(_item->GetName(), _parent->GetName()))
+				{
+					cout << InputToNormalized(_command[1]) << " gave you " << InputToNormalized(_command[3]) << ".\n";
+					return true;
+				}
+				cout << _parent->GetName() << " says: I cannot give you that.\n";
+				return false;
+			}
+			cout << _parent->GetName() << " says: I don't have that.\n";
+			return false;
+		}
+		cout << "You can't ask someone who's not human to give you anything.\n";
 		return false;
 	};
 	controls["CAST"] = [&](vector<string> _command) -> bool {

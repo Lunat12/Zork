@@ -12,7 +12,7 @@ using namespace std;
 class GameControl
 {
 public:
-	GameControl(World* _world);
+	GameControl();
 
 	void GetCommand();
 	vector<string> ParseInput(string _input);
@@ -25,6 +25,6 @@ private:
 	map<string, function<bool(vector<string>)>> controls;
 	map<string, int> directions;
 	Player* player;
-	World* world;
+	//World* world;
 };
 

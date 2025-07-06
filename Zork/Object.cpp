@@ -90,6 +90,11 @@ bool Object::DropObject(string _object)
 
 Object* Object::ValidateObject(string _object)
 {
+	for (char& c : _object)
+	{
+		c = (char)toupper(c);
+	}
+
 	for (size_t i = 0; i < inventory.size(); i++)
 	{
 		if (inventory[i]->name == _object)
