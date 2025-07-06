@@ -55,3 +55,8 @@ bool Exit::SaveObject(string _object, Object* _parent)
     }
     return false;
 }
+
+bool Exit::IsActive()
+{
+    return isActive;
+}

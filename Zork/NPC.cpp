@@ -33,7 +33,6 @@ void Npc::changeState()
         currentDialog = *dialogs[3];
         state = ACTIVE;
         break;
- 
     }
 }
 

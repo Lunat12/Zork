@@ -47,13 +47,23 @@ bool Player::GoNextRoom(int _dir)
 	Exit* _nextRoom = currentRoom->ValidateExit(_dir);
 	if (_nextRoom == nullptr) return false;
 
-	currentRoom = _nextRoom->GetNext();
-	//TODO: ACTIVATE IS VISITED
-	//TODO: READ DESCRIPTION
-	return true;
+	if (_nextRoom->IsActive()) 
+	{
+		currentRoom = _nextRoom->GetNext();
+		return true;
+	}
+
+	return false;
+
+	
 }
 
 void Player::SetMute()
 {
 	isHearing = false;
+}
+
+Room* Player::GetCurrentRoom()
+{
+	return currentRoom;
 }

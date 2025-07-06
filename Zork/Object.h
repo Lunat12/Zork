@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 enum ObjectTypes
@@ -28,6 +29,7 @@ public:
 	virtual bool SaveObject(string _object);
 	bool DropObject(string _object);
 	Object* ValidateObject(string _object);
+	map<int, vector<Object*>> GetInventory();
 
 protected:
 	vector<Object*> inventory;

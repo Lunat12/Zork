@@ -5,6 +5,7 @@
 #include <map>
 #include <functional>
 #include "Player.h"
+#include "Globals.h"
 using namespace std;
 
 class GameControl

@@ -6,10 +6,49 @@ GameControl::GameControl(World _world)
 	//TODO: SEARCH FOR PLAYER IN WORLD
 
 	controls["GO"] = [&](vector<string> _command) -> bool {
-		_player->GoNextRoom(directions[_command[1]]);
+		
+
+		if (directions.find(_command[1]) != directions.end())
+		{
+			if (player->GoNextRoom(directions[_command[1]])) 
+			{
+				Room* _currentRoom = player->GetCurrentRoom();
+				if (!isVerbose && _currentRoom->IsVisited())
+				{
+					cout << _currentRoom->GetName() + "\n";
+					return true;
+				}
+
+				cout << _currentRoom->GetName() + "\n";
+				cout << _currentRoom->GetDescription() + "\n";
+
+				for (size_t i = 0; i < _currentRoom->GetInventory()[ITEM].size(); i++)
+				{
+					cout << "There's an item here: " << _currentRoom->GetInventory()[ITEM][i]->GetName() << "\n";
+				}
+				for (size_t i = 0; i < _currentRoom->GetInventory()[NPC].size(); i++)
+				{
+					cout << "There's a person here: " << _currentRoom->GetInventory()[NPC][i]->GetName() << "\n";
+				}
+				for (size_t i = 0; i < _currentRoom->GetInventory()[ENEMY].size(); i++)
+				{
+					cout << "There's a " << _currentRoom->GetInventory()[ENEMY][i]->GetName() << " here.\n";
+				}
+
+				cout << "Exits:\n";
+				for (size_t i = 0; i < _currentRoom->GetInventory()[EXIT].size(); i++)
+				{
+					Exit* _currentExit;
+					_currentExit = dynamic_cast<Exit*>(_currentRoom->GetInventory()[EXIT][i]);
+					cout << "-" << _currentExit->GetExitType() << ": " << _currentExit->GetName() << "\n";
+				}
+
+			}
+		}
+		cout << "I can't go there.\n";
+		return false;
     };
 	controls["STORE"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
 		return false;
 	};
 	controls["DROP"] = [&](vector<string> _command) -> bool {
@@ -41,6 +80,14 @@ GameControl::GameControl(World _world)
 		return false;
 	};
 	controls["FILL"] = [&](vector<string> _command) -> bool {
+		cout << "test\n";
+		return false;
+	};
+	controls["VERBOSE"] = [&](vector<string> _command) -> bool {
+		cout << "test\n";
+		return false;
+	};
+	controls["BRIEF"] = [&](vector<string> _command) -> bool {
 		cout << "test\n";
 		return false;
 	};

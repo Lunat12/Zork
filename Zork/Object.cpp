@@ -90,3 +90,22 @@ Object* Object::ValidateObject(string _object)
 	}
 	return nullptr;
 }
+
+map<int, vector<Object*>> Object::GetInventory()
+{
+	map<int, vector<Object*>> _sortedInventory;
+
+	for (size_t i = 0; i < 7; i++)
+	{
+		vector<Object*> _newVector;
+		_sortedInventory[i] = _newVector;
+	}
+
+	for (size_t i = 0; i < inventory.size(); i++)
+	{
+		_sortedInventory[inventory[i]->GetType()].push_back(inventory[i]);
+	}
+	return _sortedInventory;
+}
+
+
