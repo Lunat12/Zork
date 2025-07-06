@@ -56,6 +56,11 @@ Exit* Room::ValidateExit(int _exitType)
 	return nullptr;
 }
 
+void Room::LoadExit(Exit* _exit)
+{
+	inventory.push_back(_exit);
+}
+
 
 
 

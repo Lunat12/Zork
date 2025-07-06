@@ -14,6 +14,7 @@ public:
 	void SetLight();
 	bool IsVisited();
 	Exit* ValidateExit(int _exitType);
+	void LoadExit(Exit* _exit);
 	
 private:
 	
