@@ -5,6 +5,15 @@ Object::Object(string _name, string _description)
 	name = _name;
 	description = _description;
 	type = ITEM;
+	isContainer = true;
+}
+
+Object::Object(string _name, string _description, bool _isContainer)
+{
+	name = _name;
+	description = _description;
+	type = ITEM;
+	isContainer = _isContainer;
 }
 
 string Object::GetName()
@@ -106,6 +115,11 @@ map<int, vector<Object*>> Object::GetInventory()
 		_sortedInventory[inventory[i]->GetType()].push_back(inventory[i]);
 	}
 	return _sortedInventory;
+}
+
+bool Object::IsContainer()
+{
+	return isContainer;
 }
 
 

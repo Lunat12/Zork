@@ -11,6 +11,7 @@ public:
 	bool SaveObject(string _object, string _parent, string _recipient) override;
 	bool GoNextRoom(int _dir);
 	void SetMute();
+	bool hasItemAllready();
 	Room* GetCurrentRoom();
 
 

@@ -19,6 +19,7 @@ class Object
 {
 public:
 	Object(string _name, string _description);
+	Object(string _name, string _description, bool _isContainer);
 
 	string GetName();
 	string GetDescription();
@@ -30,13 +31,14 @@ public:
 	bool DropObject(string _object);
 	Object* ValidateObject(string _object);
 	map<int, vector<Object*>> GetInventory();
+	bool IsContainer();
 
 protected:
 	vector<Object*> inventory;
 	int type;
 
 private:
-
+	bool isContainer;
 	string name;
 	string description;
 };

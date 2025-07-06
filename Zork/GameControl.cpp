@@ -1,7 +1,6 @@
 #include "GameControl.h"
-using namespace std;
 
-GameControl::GameControl(World _world)
+GameControl::GameControl(World* _world)
 {
 	//TODO: SEARCH FOR PLAYER IN WORLD
 
@@ -65,49 +64,70 @@ GameControl::GameControl(World _world)
 				return false;
 			}
 		}
-		if (_command.size() == 2 && !isInInventory)
+
+		if (!player->hasItemAllready() && _command.size() == 2)
 		{
-			if (player->GetCurrentRoom()->ValidateObject(_command[1])->GetType() != ITEM)
+			if (!isInInventory)
 			{
-				cout << "It might not be a good idea to get that inside your robe.\n";
+				if (player->GetCurrentRoom()->ValidateObject(_command[1])->GetType() != ITEM)
+				{
+					cout << "It might not be a good idea to get that inside your robe.\n";
+					return false;
+				}
+				if (player->SaveObject(_command[1]))
+				{
+					cout << "You stored " << InputToNormalized(_command[1]) << " in your robe.\n";
+					return true;
+				}
+			}
+			else
+			{
+				cout << "You allready got that.\n";
 				return false;
 			}
-			if (player->SaveObject(_command[1])) 
-			{
-				cout << "You stored " << InputToNormalized(_command[1]) << " in your robe.\n";
-				return true;
-			}
 		}
-		else if (_command.size() == 2 && isInInventory) 
+		else if (player->hasItemAllready() && _command.size() == 2) 
 		{
-			cout << "You allready got that.\n";
+			cout << "You can only fit one item in your robe.\n";
 			return false;
 		}
-		else if(_command.size() == 4)
+		if(_command.size() == 4)
 		{
-			if (isInInventory) 
+			Object* _container = player->ValidateObject(_command[3]);
+			if (_container == nullptr) 
 			{
-				if (player->ValidateObject(_command[1])->GetType() != ITEM)
+				cout << "You can't store an item in an object you don't posses.\n";
+				return false;
+			}
+
+			if (_container->GetType() == ITEM && _container->IsContainer()) 
+			{
+				if (isInInventory)
+				{
+					if (player->ValidateObject(_command[1])->GetType() != ITEM)
+					{
+						cout << "It might not be a good idea to get that inside a " << InputToNormalized(_command[3]) << ".\n";
+						return false;
+					}
+					if (player->SaveObject(_command[1], player->GetName(), _command[3]))
+					{
+						cout << "You stored " << InputToNormalized(_command[1]) << " inside the" << InputToNormalized(_command[3]) << ".\n";
+						return true;
+					}
+				}
+				if (player->GetCurrentRoom()->ValidateObject(_command[1])->GetType() != ITEM)
 				{
 					cout << "It might not be a good idea to get that inside a " << InputToNormalized(_command[3]) << ".\n";
 					return false;
 				}
-				if (player->SaveObject(_command[1], player->GetName(), _command[3]))
+				if (player->SaveObject(_command[1], player->GetCurrentRoom()->GetName(), _command[3]))
 				{
 					cout << "You stored " << InputToNormalized(_command[1]) << " inside the" << InputToNormalized(_command[3]) << ".\n";
 					return true;
 				}
 			}
-			if (player->GetCurrentRoom()->ValidateObject(_command[1])->GetType() != ITEM)
-			{
-				cout << "It might not be a good idea to get that inside a " << InputToNormalized(_command[3]) << ".\n";
-				return false;
-			}
-			if (player->SaveObject(_command[1], player->GetCurrentRoom()->GetName(), _command[3]))
-			{
-				cout << "You stored " << InputToNormalized(_command[1]) << " inside the" << InputToNormalized(_command[3]) << ".\n";
-				return true;
-			}
+			cout << "You cannot store items in that.\n";
+			return false;
 		}
 		cout << "You cannot store that.\n";
 		return false;

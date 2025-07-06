@@ -14,15 +14,6 @@ bool Player::SaveObject(string _object)
 
 	if (_currentObject != nullptr)
 	{
-
-		if (_currentObject->GetType() == ITEM)
-		{
-			for (size_t i = 0; i < inventory.size(); i++)
-			{
-				if (inventory[i]->GetType() == ITEM) return false;
-			}
-
-		}
 		currentRoom->DropObject(_object);
 		inventory.push_back(_currentObject);
 		return true;
@@ -61,6 +52,16 @@ bool Player::GoNextRoom(int _dir)
 void Player::SetMute()
 {
 	isHearing = false;
+}
+
+bool Player::hasItemAllready()
+{
+	for (size_t i = 0; i < inventory.size(); i++)
+	{
+		if (inventory[i]->GetType() == ITEM) return true;
+	}
+
+	return false;
 }
 
 Room* Player::GetCurrentRoom()
