@@ -19,6 +19,7 @@ public:
 	vector<string> ParseInput(string _input);
 	string InputToUpper(string _input);
 	string InputToNormalized(string _input);
+	void PrintExamine(Object* _object);
 
 
 private:

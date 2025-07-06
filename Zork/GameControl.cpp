@@ -13,32 +13,14 @@ GameControl::GameControl()
 				if (player->GoNextRoom(directions[_command[1]]))
 				{
 					Room* _currentRoom = player->GetCurrentRoom();
-
-					cout << _currentRoom->GetName() + "\n";
-					if (!isVerbose && _currentRoom->IsVisited()) return true;
-
-					cout << _currentRoom->GetDescription() + "\n";
-
-					for (size_t i = 0; i < _currentRoom->GetInventory()[ITEM].size(); i++)
+					
+					if (!isVerbose && _currentRoom->IsVisited()) 
 					{
-						cout << "There's an item here: " << _currentRoom->GetInventory()[ITEM][i]->GetName() << "\n";
-					}
-					for (size_t i = 0; i < _currentRoom->GetInventory()[NPC].size(); i++)
-					{
-						cout << "There's a person here: " << _currentRoom->GetInventory()[NPC][i]->GetName() << "\n";
-					}
-					for (size_t i = 0; i < _currentRoom->GetInventory()[ENEMY].size(); i++)
-					{
-						cout << "There's a " << _currentRoom->GetInventory()[ENEMY][i]->GetName() << " here.\n";
+						cout << _currentRoom->GetName() + "\n";
+						return true;
 					}
 
-					cout << "Exits:\n";
-					for (size_t i = 0; i < _currentRoom->GetInventory()[EXIT].size(); i++)
-					{
-						Exit* _currentExit;
-						_currentExit = dynamic_cast<Exit*>(_currentRoom->GetInventory()[EXIT][i]);
-						cout << "-" << _currentExit->GetExitType() << ": " << _currentExit->GetName() << "\n";
-					}
+					PrintExamine(_currentRoom);
 
 					return true;
 				}
@@ -394,6 +376,120 @@ GameControl::GameControl()
 		cout << "Verbose mode deactivated. I will now only full descriptions of rooms you've never been to.\n";
 		return false;
 	};
+	controls["EXAMINE"] = [&](vector<string> _command) -> bool {
+		if (_command.size() != 2)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+
+		Object* _object = player->GetCurrentRoom()->ValidateObject(_command[1]);
+		if (_object != nullptr)
+		{
+			PrintExamine(_object);
+			return true;
+		}
+
+		_object = player->ValidateObject(_command[1]);
+		if (_object != nullptr)
+		{
+			PrintExamine(_object);
+			return true;
+		}
+
+		if (directions.find(_command[1]) != directions.end())
+		{
+			_object = player->GetCurrentRoom()->ValidateExit(directions[_command[1]]);
+			if (_object != nullptr)
+			{
+				PrintExamine(_object);
+				return true;
+			}
+		}
+
+		if (player->GetCurrentRoom()->GetName() == InputToNormalized(_command[1]))
+		{
+			PrintExamine(player->GetCurrentRoom());
+			return true;
+		}
+
+		if (player->GetName() == InputToNormalized(_command[1]) || _command[1] == "PLAYER")
+		{
+			PrintExamine(player);
+			return true;
+		}
+
+		cout << "You cannot examine that.\n";
+		return false;
+	};
+	controls["IVENTORY"] = [&](vector<string> _command) -> bool {
+		if (_command.size() != 1)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+
+		if (player->GetInventory()[ITEM].size() < 1) 
+		{
+			cout << "Your robe pocket is empty.\n";
+			return true;
+		}
+
+		cout << "Your robe pocket contains:\n";
+		cout << player->GetInventory()[ITEM][0]->GetName();
+		return true;
+	};
+	controls["PARTY"] = [&](vector<string> _command) -> bool {
+		if (_command.size() != 1)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+
+		if (player->GetInventory()[NPC].size() < 1)
+		{
+			cout << "Nobody is tagging allong.\n";
+			return true;
+		}
+
+		cout << "Your party:\n";
+		for (size_t i = 0; i < player->GetInventory()[NPC].size(); i++)
+		{
+			cout << player->GetInventory()[NPC][i]->GetName() << "\n";
+		}
+		return true;
+	};
+	controls["HELP"] = [&](vector<string> _command) -> bool {
+		if (_command.size() != 1)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+
+		cout << "COMMANDS:\n";
+		cout << "-'GO directtion' Use it to go trough an exit. Directions can ither be:\n";
+		cout << "	'NORTH\n";
+		cout << "	'SOUTH\n";
+		cout << "	'EAST\n";
+		cout << "	'WEST\n";
+		cout << "	'UP\n";
+		cout << "	'DOWN\n";
+		cout << "-'STORE item' Use it to store an item in your inventory, you can only carry one. Item corresponds to item name.\n";
+		cout << "-'STORE item IN item' Use it to store an item inside another item. Item corresponds to item name.\n";
+		cout << "-'DROP item' Use it drop an item of your inventory. Item corresponds to item name.\n";
+		cout << "-'SPEAK TO npc' Use it to talk to an npc. Npc corresponds to npc name.\n";
+		cout << "-'GIVE item TO npc' Use it to give an item to an npc. Item corresponds to item name. Npc corresponds to npc name.\n";
+		cout << "-'USE item ON exit' Use it to use an item on an exit. Item corresponds to item name. Exit corresponds to exit name.\n";
+		cout << "-'ASK npc FOR item' Use it to ask an npc to give you an item of their inventory. Npc corresponds to npc name. Item corresponds to item name.\n";
+		cout << "-'CAST spell ON something' Use it to cast an spell of your own or of your party on something. Spell corresponds to spell name. Something can mean a room, npc... depending on the spell.\n";
+		cout << "-'VERBOSE' Use it to enables long descriptions of all rooms, is active by default.\n";
+		cout << "-'BRIEF' Use it to disables long descriptions of rooms you've allready been to.\n";
+		cout << "-'EXAMINE something' Use it to get information of almost anything in the game.\n";
+		cout << "-'INVENTORY' Use it to see your inventory.\n";
+		cout << "-'PARTY' Use it to see your party.\n";
+		cout << "-'HELP' Use it to get the list of commands and its uses.\n";
+		return true;
+	};
 
 	directions["NORTH"] = 0;
 	directions["SOUTH"] = 1;
@@ -466,6 +562,56 @@ string GameControl::InputToNormalized(string _input)
 	}
 
 	return _input;
+}
+
+void GameControl::PrintExamine(Object* _object)
+{
+	cout << _object->GetName() + "\n";
+	cout << _object->GetDescription() + "\n";
+
+	if (_object->GetType() == ROOM) 
+	{
+		for (size_t i = 0; i < _object->GetInventory()[ITEM].size(); i++)
+		{
+			cout << "There's an item here: " << _object->GetInventory()[ITEM][i]->GetName() << "\n";
+		}
+		for (size_t i = 0; i < _object->GetInventory()[NPC].size(); i++)
+		{
+			cout << "There's a person here: " << _object->GetInventory()[NPC][i]->GetName() << "\n";
+		}
+		for (size_t i = 0; i < _object->GetInventory()[ENEMY].size(); i++)
+		{
+			cout << "There's a " << _object->GetInventory()[ENEMY][i]->GetName() << " here.\n";
+		}
+
+		cout << "Exits:\n";
+		for (size_t i = 0; i < _object->GetInventory()[EXIT].size(); i++)
+		{
+			Exit* _currentExit;
+			_currentExit = dynamic_cast<Exit*>(_object->GetInventory()[EXIT][i]);
+			cout << "-" << _currentExit->GetExitType() << ": " << _currentExit->GetName() << "\n";
+		}
+	}
+	else if(_object->GetType() == ITEM && _object->IsContainer())
+	{
+		cout << "Contains:\n";
+		for (size_t i = 0; i < _object->GetInventory()[ITEM].size(); i++)
+		{
+			cout << _object->GetInventory()[ITEM][i]->GetName() << "\n";
+		}
+	
+	}
+	else if(_object->GetType() == NPC)
+	{
+		for (size_t i = 0; i < _object->GetInventory()[ITEM].size(); i++)
+		{
+			cout << "Carries " << _object->GetInventory()[ITEM][i]->GetName() << " with them.\n";
+		}
+		for (size_t i = 0; i < _object->GetInventory()[SPELL].size(); i++)
+		{
+			cout << "Can cast " << _object->GetInventory()[SPELL][i]->GetName() << "\n";
+		}
+	}
 }
 
 
