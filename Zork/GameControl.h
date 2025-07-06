@@ -16,6 +16,8 @@ public:
 	void GetCommand();
 	vector<string> ParseInput(string _input);
 	string InputToUpper(string _input);
+	string InputToNormalized(string _input);
+
 
 private:
 
