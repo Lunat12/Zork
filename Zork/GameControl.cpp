@@ -108,7 +108,7 @@ GameControl::GameControl(World* _world)
 					}
 					if (player->SaveObject(_command[1], player->GetName(), _command[3]))
 					{
-						cout << "You stored " << InputToNormalized(_command[1]) << " inside the" << InputToNormalized(_command[3]) << ".\n";
+						cout << "You stored " << InputToNormalized(_command[1]) << " inside the " << InputToNormalized(_command[3]) << ".\n";
 						return true;
 					}
 				}
@@ -119,7 +119,7 @@ GameControl::GameControl(World* _world)
 				}
 				if (player->SaveObject(_command[1], player->GetCurrentRoom()->GetName(), _command[3]))
 				{
-					cout << "You stored " << InputToNormalized(_command[1]) << " inside the" << InputToNormalized(_command[3]) << ".\n";
+					cout << "You stored " << InputToNormalized(_command[1]) << " inside the " << InputToNormalized(_command[3]) << ".\n";
 					return true;
 				}
 			}
@@ -189,7 +189,44 @@ GameControl::GameControl(World* _world)
 		return false;
 	};
 	controls["GIVE"] = [&](vector<string> _command) -> bool {
-		cout << "test\n";
+		if (_command.size() != 4) 
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+
+		Object* _container = player->ValidateObject(_command[3]);
+		if (_container == nullptr)
+		{
+			_container = player->GetCurrentRoom()->ValidateObject(_command[3]);
+
+			if (_container == nullptr)
+			{
+				cout << "You can't give anything to someone who's not here.\n";
+				return false;
+			}
+		}
+
+		if (_container->GetType() == NPC)
+		{
+			Object* _item = player->ValidateObject(_command[1]);
+			if (_item != nullptr) 
+			{
+				if (_item->GetType() != ITEM)
+				{
+					cout << "It might not be a good idea to give that to " << InputToNormalized(_command[3]) << ".\n";
+					return false;
+				}
+				if (player->SaveObject(_command[1], player->GetName(), _command[3]))
+				{
+					cout << "You gave " << InputToNormalized(_command[1]) << " to " << InputToNormalized(_command[3]) << ".\n";
+					return true;
+				}
+			}
+			cout << "You can't give something you don't have.\n";
+			return false;
+		}
+		cout << "You can't go arround giving stuff to things that are not human.\n";
 		return false;
 	};
 	controls["USE"] = [&](vector<string> _command) -> bool {
