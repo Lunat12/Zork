@@ -9,10 +9,10 @@ Spell::Spell(string _name, string _description, int _spell) : Object(_name, _des
 bool Spell::Cast(Object* _objective)
 {
     switch (spell) {
-    case CREATE_LIGHT:
+    case LUMOS:
         return CreateLight(_objective);
         break;
-    case HYPNOS_DREAM:
+    case HYPNODREAM:
         return HypnosDream(_objective);
         break;
     case MUTE:

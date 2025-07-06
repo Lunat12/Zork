@@ -1,8 +1,8 @@
 #include "GameControl.h"
 
-GameControl::GameControl()
+GameControl::GameControl(Player* _player)
 {
-	//TODO: SEARCH FOR PLAYER IN WORLD
+	player = _player;
 
 	controls["GO"] = [&](vector<string> _command) -> bool {
 
@@ -459,6 +459,33 @@ GameControl::GameControl()
 		}
 		return true;
 	};
+	controls["LEARN"] = [&](vector<string> _command) -> bool {
+		if (_command.size() != 2)
+		{
+			cout << "You cannot do that.\n";
+			return false;
+		}
+
+		Object* _container = player->GetCurrentRoom()->ValidateObject(_command[1]);
+
+		if (_container != nullptr)
+		{
+			if (_container->GetType() == SPELL) 
+			{
+				if (player->SaveObject(_command[1]))
+				{
+					cout << "You learned " << InputToNormalized(_command[1]) << ".\n";
+					return true;
+				}
+				cout << "You were not able to learn this spell.\n";
+				return false;
+			}
+			cout << "This is not an spell.\n";
+			return false;
+		}
+		cout << "Theres no sutch spell here.\n";
+		return false;
+	};
 	controls["HELP"] = [&](vector<string> _command) -> bool {
 		if (_command.size() != 1)
 		{
@@ -487,6 +514,7 @@ GameControl::GameControl()
 		cout << "-'EXAMINE something' Use it to get information of almost anything in the game.\n";
 		cout << "-'INVENTORY' Use it to see your inventory.\n";
 		cout << "-'PARTY' Use it to see your party.\n";
+		cout << "-'LEARN spell' Use it to learn an spell form a spellbook. Spell corresponds to spell name.\n";
 		cout << "-'HELP' Use it to get the list of commands and its uses.\n";
 		return true;
 	};
@@ -582,6 +610,10 @@ void GameControl::PrintExamine(Object* _object)
 		for (size_t i = 0; i < _object->GetInventory()[ENEMY].size(); i++)
 		{
 			cout << "There's a " << _object->GetInventory()[ENEMY][i]->GetName() << " here.\n";
+		}
+		for (size_t i = 0; i < _object->GetInventory()[SPELL].size(); i++)
+		{
+			cout << "There's a spellbook titled: " << _object->GetInventory()[SPELL][i]->GetName() << " here.\n";
 		}
 
 		cout << "Exits:\n";

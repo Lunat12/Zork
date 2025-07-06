@@ -6,8 +6,8 @@
 
 enum Spells
 {
-	CREATE_LIGHT,
-	HYPNOS_DREAM,
+	LUMOS,
+	HYPNODREAM,
 	MUTE
 };
 

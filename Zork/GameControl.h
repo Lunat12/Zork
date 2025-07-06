@@ -13,7 +13,7 @@ using namespace std;
 class GameControl
 {
 public:
-	GameControl();
+	GameControl(Player* _player);
 
 	void GetCommand();
 	vector<string> ParseInput(string _input);
