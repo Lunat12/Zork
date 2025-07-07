@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "Globals.h"
 using namespace std;
 
 enum ObjectTypes

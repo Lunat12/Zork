@@ -79,7 +79,11 @@ bool Object::DropObject(string _object)
 {
 	for (size_t i = 0; i < inventory.size(); i++)
 	{
-		if (inventory[i]->name == _object) 
+
+		string _name = inventory[i]->name;
+		_name = Globals_ToUpper(_name);
+
+		if (_name == _object) 
 		{
 			inventory.erase(inventory.begin() + i);
 			return true;
@@ -90,14 +94,13 @@ bool Object::DropObject(string _object)
 
 Object* Object::ValidateObject(string _object)
 {
-	for (char& c : _object)
-	{
-		c = (char)toupper(c);
-	}
 
 	for (size_t i = 0; i < inventory.size(); i++)
 	{
-		if (inventory[i]->name == _object)
+		string _name = inventory[i]->name;
+		_name = Globals_ToUpper(_name);
+
+		if (_name == _object)
 		{
 			return inventory[i];
 		}
