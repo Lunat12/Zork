@@ -21,7 +21,7 @@ World::World()
 	};
 
 	vector<string*> teacherDialogs = {
-		new string("Pots says: So your looking for unicorns today? Mmm... That's a trycky subject, you should be able to attract one whit an apple, but you'll need to bring Sacred Water to be alloud into the Magical Forest. The apple should be easy enough to get from the garden but I don't know about the Sacred Water. Anyway have fun on your quest and if you get across a mandrake would you be so kind to bring it to me?"),
+		new string("Pots says: So your looking for unicorns today? Mmm... That's a trycky subject, you should be able to attract one whit an apple, but you'll need to bring Sacred Water to be allowed into the Magical Forest. The apple should be easy enough to get from the garden but I don't know about the Sacred Water. Anyway have fun on your quest and if you get across a mandrake would you be so kind to bring it to me?"),
 		new string("Pots says: Thank you so mutch. You took this from mrs.Green's Greenhouse? Nicely done, it probably would have starved anyway waiting for mrs.green to get back. If you need help on your quest now I'll be happy to help."),
 		new string("Pots says: Do you want me to follow you now?"),
 		new string("Pots says: Do you want me to wait here?")
@@ -92,7 +92,7 @@ World::World()
 	Exit* gardenToClass = new Exit("Building", "Northern building", NORTH , potionClass);
 	Exit* gardenToForest = new Exit("Vines", "Huge vines that guard the entrance to the magical forest.", EAST, water, forest);
 	Exit* gardenToGreenhouse = new Exit("Shaft", "Small glass cabin.", SOUTH, greenhouse);
-	Exit* gardenToUnderWell = new Exit("Well", "Classical water well not featuring any bucket or polley system.", DOWN, blinds, underwell);
+	Exit* gardenToUnderWell = new Exit("Well", "Classical water well not featuring any bucket or polley system. You belive you can hear faint eiree sounds coming from below.", DOWN, blinds, underwell);
 
 	garden->LoadExit(gardenToHall);
 	garden->LoadExit(gardenToClass);
