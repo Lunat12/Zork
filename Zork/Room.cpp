@@ -30,7 +30,7 @@ bool Room::IsVisited()
 	}
 	else 
 	{
-		isVisited = true;
+		if(!isDark) isVisited = true;
 		return false;
 	}
 	

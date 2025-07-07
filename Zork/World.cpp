@@ -8,10 +8,15 @@ World::World()
 
 	Object* blinds   = new Object("Blinds", "Great Hall's iconic red blinds.");
 	Object* apple    = new Object("Apple", "Golden apple from the school's garden.");
-	Object* cauldron = new Object("Cauldron", "Rusty cauldron for potion brewing.", true);
 	Object* mandrake = new Object("Mandrake", "Really noisy plant, commonly used for potion making.");
 	Object* coins    = new Object("Coins", "This coins were ment to be student's wishes.");
 	Object* water    = new Object("Water", "This water seems to be sacred.");
+
+	vector<Object*> cauldronPosibles = {
+		water
+	};
+
+	Object* cauldron = new Object("Cauldron", "Rusty cauldron for potion brewing.", true, cauldronPosibles);
 
 	vector<string*> henryDialogs = {
 		new string("Henry says: Sight... I cannot belive those dudes from fourth grade took my wallet before leaving... What am I supposed to do now."),
@@ -34,11 +39,15 @@ World::World()
 		new string("Unicorn says: Do you want me to wait here? *brrr*")
 	};
 
+	vector<Object*> potsInventory = {
+		hypnodream
+	};
+
+	Npc* pots    = new Npc("Pots", "Mr.Pots is your potions teacher but he also knows his way around magic.", mandrake, teacherDialogs, potsInventory);
 	Npc* henry   = new Npc("Henry", "Your classmate, he's stuck here with you during the holliday. Allways goes arround with a huge bag.", coins, henryDialogs);
-	Npc* pots    = new Npc("Pots", "Mr.Pots is your potions teacher but he also knows his way around magic.", mandrake, teacherDialogs);
 	Npc* unicorn = new Npc("Unicorn", "Beautiful unicorn with hair the colors of the rainbow.", apple, unicornDialogs);
 
-	Enemy* syren = new Enemy("Syren", "A woman with a bird body awaits sited on the rock in the middle of the pond, seems to be singing an strange song.");
+	Enemy* syren = new Enemy("Syren", "A woman with a bird body awaits sited on the rock in the middle of the pond, sings an strange song.");
 
 	vector<Object*> hallObjects = {
 		henry,
@@ -128,7 +137,11 @@ World::World()
 	
 	pond->LoadExit(pondToUnderwell);
 
-	player = new Player(hall);
+
+	vector<Object*> playerInventory = {
+		lumos
+	};
+	player = new Player(hall, playerInventory);
 }
 
 Player* World::GetPlayer()

@@ -68,9 +68,12 @@ int main()
 	if (!global_dead) 
 	{
 		int score = CalculatePoints();
-		cout << "You made " << score << "/80 points.";
+		cout << "You made " << score << "/80 points.\n";
 	}
 	cout << "Thanks for playing!\n";
+
+	cout << "Press enter to end...\n";
+	getchar();
 }
 
 

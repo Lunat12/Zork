@@ -9,12 +9,27 @@ Npc::Npc(string _name, string _description, Object* _trigger, vector<string*> _d
     currentDialog = *dialogs[0];
 }
 
-int Npc::getState()
+Npc::Npc(string _name, string _description, Object* _trigger, vector<string*> _dialogs, vector<Object*> _inventory) : Object(_name, _description)
+{
+    trigger = _trigger;
+    dialogs = _dialogs;
+    type = NPC;
+    state = DEFAULT;
+    currentDialog = *dialogs[0];
+    inventory = _inventory;
+}
+
+int Npc::GetState()
 {
     return state;
 }
 
-string Npc::getDialog()
+string Npc::GetTrigger()
+{
+    return trigger->GetName();
+}
+
+string Npc::GetDialog()
 {
     return currentDialog;
 }
@@ -30,15 +45,15 @@ void Npc::ChangeState(Object* _playerObj)
         break;
     case ACTIVE:
         currentDialog = *dialogs[3];
-        Object::SaveObject(GetName(), _player->GetCurrentRoom()->GetName(), _player->GetName());
+        _player->SaveObject(GetName());
         state = FOLLOWING;
-        cout << GetName() << " now follows you!";
+        cout << Globals_ToNormalized(GetName()) << " now follows you!";
         break;
     case FOLLOWING:
         currentDialog = *dialogs[2];
-        Object::SaveObject(GetName(), _player->GetName(), _player->GetCurrentRoom()->GetName());
+        _player->SaveObject(GetName(), _player->GetName(), _player->GetCurrentRoom()->GetName());
         state = ACTIVE;
-        cout << GetName() << " will be waiting here.";
+        cout << Globals_ToNormalized(GetName()) << " will be waiting here.";
         break;
     }
 }
@@ -58,7 +73,7 @@ bool Npc::Trigger(string _triggerName, Object* _player)
 
 bool Npc::SaveObject(string _object, Object* _parent)
 {
-    if (state = DEFAULT) return Trigger(_object, _parent);
+    if (state == DEFAULT) return Trigger(_object, _parent);
 
     Object* _currentObject = _parent->ValidateObject(_object);
 

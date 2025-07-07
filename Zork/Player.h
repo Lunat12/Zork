@@ -1,11 +1,14 @@
 #pragma once
 #include "Object.h"
 #include "Room.h"
+#include "NPC.h"
+
+//class Npc;
 
 class Player : public Object
 {
 public:
-	Player(Room* _currentRoom);
+	Player(Room* _currentRoom, vector<Object*> _inventory);
 
 	bool SaveObject(string _object) override;
 	bool SaveObject(string _object, string _parent, string _recipient) override;

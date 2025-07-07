@@ -1,10 +1,11 @@
 #include "Player.h"
 
-Player::Player(Room* _currentRoom) : Object("Me", "You look exactly as you did this morning.")
+Player::Player(Room* _currentRoom, vector<Object*> _inventory) : Object("Me", "You look exactly as you did this morning.")
 {
 	currentRoom = _currentRoom;
 	type = PC;
 	isHearing = true;
+	inventory = _inventory;
 }
 
 bool Player::SaveObject(string _object)
@@ -25,19 +26,45 @@ bool Player::SaveObject(string _object, string _parent, string _recipient)
 {
 	Object* _currentParent;
 
-	if (_parent == "Me") 
+	if (_parent == "ME") 
 	{
 		_currentParent = this;
+	}
+	else if (_parent == currentRoom->GetName()) 
+	{
+		_currentParent = currentRoom;
 	}
 	else 
 	{
 		_currentParent = ValidateObject(_parent);
 	}
 
-	Object* _currentRecipient = currentRoom->ValidateObject(_recipient);
+	Object* _currentRecipient;
+
+	if (currentRoom->GetName() == _recipient) 
+	{
+		_currentRecipient = currentRoom;
+	}
+	else 
+	{
+		_currentRecipient = currentRoom->ValidateObject(_recipient);
+		
+		if (_currentRecipient == nullptr) 
+		{
+			_currentRecipient = ValidateObject(_recipient);
+		}
+	}
 
 	if (_currentParent != nullptr && _currentRecipient != nullptr)
 	{
+		if (_currentRecipient->GetType() == NPC) 
+		{
+			Npc* _npc;
+			_npc = dynamic_cast<Npc*>(_currentRecipient);
+
+			return _npc->SaveObject(_object, _currentParent);
+		}
+
 		return _currentRecipient->SaveObject(_object, _currentParent);
 	}
 	return false;

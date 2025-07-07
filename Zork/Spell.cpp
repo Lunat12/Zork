@@ -30,7 +30,7 @@ bool Spell::CreateLight(Object* _objective)
     if (_room != nullptr)
     {
         _room->SetLight();
-        cout << "You created light at the " << _room->GetName();
+        cout << "You created light at the " << Globals_ToNormalized(_room->GetName());
         return true;
     }
     return false;
@@ -42,8 +42,9 @@ bool Spell::HypnosDream(Object* _objective)
 
     if (_enemy != nullptr)
     {
-        _enemy->makeSleep();
-        cout << "The " << _enemy->GetName() << " fell asleep.";
+        _enemy->MakeSleep();
+        cout << "The " << Globals_ToNormalized(_enemy->GetName()) << " fell asleep.";
+        _enemy->SetDescription(_enemy->GetDescription() + " Is sleeping.");
         return true;
     }
     return false;

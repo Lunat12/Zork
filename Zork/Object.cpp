@@ -16,9 +16,18 @@ Object::Object(string _name, string _description, bool _isContainer)
 	isContainer = _isContainer;
 }
 
+Object::Object(string _name, string _description, bool _isContainer, vector<Object*> _positbleItems)
+{
+	name = _name;
+	description = _description;
+	type = ITEM;
+	isContainer = _isContainer;
+	positbleItems = _positbleItems;
+}
+
 string Object::GetName()
 {
-	return name;
+	return Globals_ToUpper(name);
 }
 
 string Object::GetDescription()
@@ -34,7 +43,12 @@ int Object::GetType()
 bool Object::SaveObject(string _object, string _parent)
 {
 	Object* _currentParent = ValidateObject(_parent);
-	Object* _currentObject = _currentParent->ValidateObject(_object);
+	Object* _currentObject = nullptr;
+
+	if (_currentParent != nullptr) 
+	{
+		_currentObject = _currentParent->ValidateObject(_object);
+	}
 
 	if (_currentObject != nullptr)
 	{
@@ -108,6 +122,21 @@ Object* Object::ValidateObject(string _object)
 	return nullptr;
 }
 
+Object* Object::ValidateItem(string _object)
+{
+	for (size_t i = 0; i < positbleItems.size(); i++)
+	{
+		string _name = positbleItems[i]->name;
+		_name = Globals_ToUpper(_name);
+
+		if (_name == _object)
+		{
+			return positbleItems[i];
+		}
+	}
+	return nullptr;
+}
+
 map<int, vector<Object*>> Object::GetInventory()
 {
 	map<int, vector<Object*>> _sortedInventory;
@@ -130,4 +159,8 @@ bool Object::IsContainer()
 	return isContainer;
 }
 
+void Object::SetDescription(string _description)
+{
+	description = _description;
+}
 
