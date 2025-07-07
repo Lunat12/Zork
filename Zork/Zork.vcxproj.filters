@@ -31,10 +31,13 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Globals.cpp">
+    <ClCompile Include="GameControl.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="GameControl.cpp">
+    <ClCompile Include="World.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Globals.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,5 +69,6 @@
     <ClInclude Include="Globals.h">
       <Filter>Archivos de origen</Filter>
     </ClInclude>
+    <ClInclude Include="World.h" />
   </ItemGroup>
 </Project>

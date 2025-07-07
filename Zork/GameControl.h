@@ -5,9 +5,9 @@
 #include <map>
 #include <functional>
 #include "Player.h"
-#include "Globals.h"
 #include "NPC.h"
 #include "Spell.h"
+#include "Globals.h"
 using namespace std;
 
 class GameControl
@@ -17,7 +17,6 @@ public:
 
 	void GetCommand();
 	vector<string> ParseInput(string _input);
-	string InputToUpper(string _input);
 	string InputToNormalized(string _input);
 	void PrintExamine(Object* _object);
 
@@ -27,6 +26,6 @@ private:
 	map<string, function<bool(vector<string>)>> controls;
 	map<string, int> directions;
 	Player* player;
-	//World* world;
+	bool isFirstCommand;
 };
 

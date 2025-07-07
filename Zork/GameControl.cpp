@@ -3,6 +3,7 @@
 GameControl::GameControl(Player* _player)
 {
 	player = _player;
+	isFirstCommand = true;
 
 	controls["GO"] = [&](vector<string> _command) -> bool {
 
@@ -10,11 +11,36 @@ GameControl::GameControl(Player* _player)
 		{
 			if (directions.find(_command[1]) != directions.end())
 			{
+				if (player->GetCurrentRoom()->GetName() == "Hall" && directions[_command[1]] == NORTH) 
+				{
+					global_end = true;
+					if (player->ValidateObject("Unicorn")) global_gotUnicorn = true;
+					return true;
+				}
+
 				if (player->GoNextRoom(directions[_command[1]]))
 				{
 					Room* _currentRoom = player->GetCurrentRoom();
+
+					if (_currentRoom->GetName() == "Underwell") 
+					{
+						if (player->IsHearing()) 
+						{
+							global_dead = true;
+							cout << "You hear an eiree melody. It lures you in it's direction. You seem to walk for a while until you reach the source of the song. Then you can feel something pulling you from bellow.\n";
+							cout << "YOU DROWNED.\n";
+							global_end = true;
+						}
+						
+						global_climbedWell = true;
+					}
+
+					if (_currentRoom->GetName() == "Forest")
+					{
+						global_visitedMagicalForest = true;
+					}
 					
-					if (!isVerbose && _currentRoom->IsVisited()) 
+					if (!global_isVerbose && _currentRoom->IsVisited()) 
 					{
 						cout << _currentRoom->GetName() + "\n";
 						return true;
@@ -35,89 +61,110 @@ GameControl::GameControl(Player* _player)
     };
 	controls["STORE"] = [&](vector<string> _command) -> bool {
 
-		bool isInInventory;
+		bool _isInInventory;
 		if (_command.size() >= 2)
 		{
+
 			if (player->GetCurrentRoom()->ValidateObject(_command[1]) != nullptr)
 			{
-				isInInventory = false;
+				_isInInventory = false;
 			}
 			else if (player->ValidateObject(_command[1]) != nullptr)
 			{
-				isInInventory = true;
+				_isInInventory = true;
 			}
 			else
 			{
 				cout << "You can't find that object.\n";
 				return false;
 			}
-		}
 
-		if (!player->hasItemAllready() && _command.size() == 2)
-		{
-			if (!isInInventory)
+			if (!player->hasItemAllready() && _command.size() == 2)
 			{
-				if (player->GetCurrentRoom()->ValidateObject(_command[1])->GetType() != ITEM)
+				if (!_isInInventory)
 				{
-					cout << "It might not be a good idea to get that inside your robe.\n";
+					Object* _item = player->GetCurrentRoom()->ValidateObject(_command[1]);
+
+					if (_item->GetType() != ITEM || _item->GetName() == "Water")
+					{
+						cout << "It might not be a good idea to get that inside your robe.\n";
+						return false;
+					}
+					if (player->SaveObject(_command[1]))
+					{
+						cout << "You stored " << InputToNormalized(_command[1]) << " in your robe.\n";
+						return true;
+					}
+				}
+				else
+				{
+					cout << "You allready got that.\n";
 					return false;
 				}
-				if (player->SaveObject(_command[1]))
+			}
+			else if (player->hasItemAllready() && _command.size() == 2)
+			{
+				cout << "You can only fit one item in your robe.\n";
+				return false;
+			}
+			if (_command.size() == 4)
+			{
+				Object* _container = player->ValidateObject(_command[3]);
+				if (_container == nullptr)
 				{
-					cout << "You stored " << InputToNormalized(_command[1]) << " in your robe.\n";
-					return true;
+					cout << "You can't store an item in an object you don't posses.\n";
+					return false;
 				}
-			}
-			else
-			{
-				cout << "You allready got that.\n";
-				return false;
-			}
-		}
-		else if (player->hasItemAllready() && _command.size() == 2) 
-		{
-			cout << "You can only fit one item in your robe.\n";
-			return false;
-		}
-		if(_command.size() == 4)
-		{
-			Object* _container = player->ValidateObject(_command[3]);
-			if (_container == nullptr) 
-			{
-				cout << "You can't store an item in an object you don't posses.\n";
-				return false;
-			}
 
-			if (_container->GetType() == ITEM && _container->IsContainer()) 
-			{
-				if (isInInventory)
+				if (_container->GetType() == ITEM && _container->IsContainer())
 				{
-					if (player->ValidateObject(_command[1])->GetType() != ITEM)
+					if (_isInInventory)
 					{
+						Object* _item = player->ValidateObject(_command[1]);
+						if (_item->GetType() != ITEM)
+						{
+							cout << "It might not be a good idea to get that inside a " << InputToNormalized(_command[3]) << ".\n";
+							return false;
+						}
+						if (player->SaveObject(_command[1], player->GetName(), _command[3]))
+						{
+							cout << "You stored " << InputToNormalized(_command[1]) << " inside the " << InputToNormalized(_command[3]) << ".\n";
+							return true;
+						}
+					}
+
+					Object* _item = player->GetCurrentRoom()->ValidateObject(_command[1]);
+					if (_item->GetType() != ITEM)
+					{
+						if (player->GetCurrentRoom()->GetName() == "Pond" && _item->GetName() == "Water")
+						{
+							Object* _syrenObj = player->GetCurrentRoom()->ValidateObject("Syren");
+							Enemy* _syren;
+							_syren = dynamic_cast<Enemy*>(_syrenObj);
+
+							if (!_syren->IsAsleep()) 
+							{
+								cout << "It might not be a good idea to get near the water now.\n";
+								return false;
+							}
+						}
+
 						cout << "It might not be a good idea to get that inside a " << InputToNormalized(_command[3]) << ".\n";
 						return false;
 					}
-					if (player->SaveObject(_command[1], player->GetName(), _command[3]))
+					if (player->SaveObject(_command[1], player->GetCurrentRoom()->GetName(), _command[3]))
 					{
 						cout << "You stored " << InputToNormalized(_command[1]) << " inside the " << InputToNormalized(_command[3]) << ".\n";
 						return true;
 					}
 				}
-				if (player->GetCurrentRoom()->ValidateObject(_command[1])->GetType() != ITEM)
-				{
-					cout << "It might not be a good idea to get that inside a " << InputToNormalized(_command[3]) << ".\n";
-					return false;
-				}
-				if (player->SaveObject(_command[1], player->GetCurrentRoom()->GetName(), _command[3]))
-				{
-					cout << "You stored " << InputToNormalized(_command[1]) << " inside the " << InputToNormalized(_command[3]) << ".\n";
-					return true;
-				}
+				cout << "You cannot store items in that.\n";
+				return false;
 			}
-			cout << "You cannot store items in that.\n";
+			cout << "You cannot store that.\n";
 			return false;
 		}
-		cout << "You cannot store that.\n";
+		cout << "You cannot do that.\n";
 		return false;
 	};
 	controls["DROP"] = [&](vector<string> _command) -> bool {
@@ -155,7 +202,7 @@ GameControl::GameControl(Player* _player)
 					cout << "<<Type YES or NO.>>\n";
 					string _input;
 					getline(cin, _input);
-					_input = InputToUpper(_input);
+					_input = Globals_ToUpper(_input);
 
 					if (_input == "YES") 
 					{
@@ -211,6 +258,10 @@ GameControl::GameControl(Player* _player)
 				if (player->SaveObject(_command[1], player->GetName(), _command[3]))
 				{
 					cout << "You gave " << InputToNormalized(_command[1]) << " to " << InputToNormalized(_command[3]) << ".\n";
+
+					if (InputToNormalized(_command[1]) == "Mandrake" && InputToNormalized(_command[3]) == "Pots") global_mandrakeGiven = true;
+					if (InputToNormalized(_command[1]) == "Coins" && InputToNormalized(_command[3]) == "Henry") global_coinsGiven = true;
+
 					return true;
 				}
 			}
@@ -229,7 +280,7 @@ GameControl::GameControl(Player* _player)
 
 		Object* _container = player->GetCurrentRoom()->ValidateObject(_command[3]);
 		if (_container == nullptr)
-		{	
+		{
 			cout << "You can't use that here.\n";
 			return false;
 		}
@@ -240,21 +291,30 @@ GameControl::GameControl(Player* _player)
 			_exit = dynamic_cast<Exit*>(_container);
 
 			Object* _item = player->ValidateObject(_command[1]);
-			if (_item != nullptr)
+			if (_item == nullptr)
 			{
-				if (_item->GetType() != ITEM)
+				_item = player->GetInventory()[ITEM][0]->ValidateObject(_command[1]);
+
+				if (_item == nullptr)
 				{
-					cout << "It might not be a good idea to use that here.\n";
+					cout << "You can't use something you don't have.\n";
 					return false;
 				}
-				if (_exit->Trigger(_item->GetName(), player))
-				{
-					cout << "You used " << InputToNormalized(_command[1]) << " at the " << InputToNormalized(_command[3]) << ".\n";
-					return true;
-				}
 			}
-			cout << "You can't use something you don't have.\n";
+
+			if (_item->GetType() != ITEM)
+			{
+				cout << "It might not be a good idea to use that here.\n";
+				return false;
+			}
+			if (_exit->Trigger(_item->GetName(), player))
+			{
+				cout << "You used " << InputToNormalized(_command[1]) << " at the " << InputToNormalized(_command[3]) << ".\n";
+				return true;
+			}
+			cout << "You can't use that.\n";
 			return false;
+			
 		}
 		cout << "You can't use that.\n";
 		return false;
@@ -338,6 +398,8 @@ GameControl::GameControl(Player* _player)
 			{
 				if (_spell->Cast(_item)) 
 				{
+					if (_item->GetName() == "Syren") global_syrenDefeated = true;
+		
 					return true;
 				}
 			}
@@ -363,7 +425,7 @@ GameControl::GameControl(Player* _player)
 			cout << "You cannot do that.\n";
 			return false;
 		}
-		isVerbose = true;
+		global_isVerbose = true;
 		cout << "Verbose mode activated. I will now read full descriptions of rooms.\n";
 		return false;
 	};
@@ -373,6 +435,7 @@ GameControl::GameControl(Player* _player)
 			cout << "You cannot do that.\n";
 			return false;
 		}
+		global_isVerbose = false;
 		cout << "Verbose mode deactivated. I will now only full descriptions of rooms you've never been to.\n";
 		return false;
 	};
@@ -422,7 +485,7 @@ GameControl::GameControl(Player* _player)
 		cout << "You cannot examine that.\n";
 		return false;
 	};
-	controls["IVENTORY"] = [&](vector<string> _command) -> bool {
+	controls["INVENTORY"] = [&](vector<string> _command) -> bool {
 		if (_command.size() != 1)
 		{
 			cout << "You cannot do that.\n";
@@ -475,6 +538,7 @@ GameControl::GameControl(Player* _player)
 				if (player->SaveObject(_command[1]))
 				{
 					cout << "You learned " << InputToNormalized(_command[1]) << ".\n";
+					global_spellLearned = true;
 					return true;
 				}
 				cout << "You were not able to learn this spell.\n";
@@ -529,6 +593,18 @@ GameControl::GameControl(Player* _player)
 
 void GameControl::GetCommand()
 {
+	if (isFirstCommand)
+	{
+		vector<string> _command = {
+			"EXAMINE",
+			"HALL"
+		};
+		controls[_command[0]](_command);
+
+		isFirstCommand = false;
+		return;
+	}
+
 	string _input;
 	getline(cin, _input);
 
@@ -549,7 +625,7 @@ vector<string> GameControl::ParseInput(string _input)
 {
 	vector<string> _command;
 
-	_input = InputToUpper(_input);
+	_input = Globals_ToUpper(_input);
 	const char* _iterator = _input.c_str();
 
 	do
@@ -569,16 +645,6 @@ vector<string> GameControl::ParseInput(string _input)
 	return _command;
 }
 
-string GameControl::InputToUpper(string _input)
-{
-	for (char& c : _input) 
-	{
-		c = (char)toupper(c);
-	}
-
-	return _input;
-}
-
 string GameControl::InputToNormalized(string _input)
 {
 	bool _isFirst = true;
@@ -595,10 +661,21 @@ string GameControl::InputToNormalized(string _input)
 void GameControl::PrintExamine(Object* _object)
 {
 	cout << _object->GetName() + "\n";
-	cout << _object->GetDescription() + "\n";
+	
 
 	if (_object->GetType() == ROOM) 
 	{
+		Room* _currentRoom;
+		_currentRoom = dynamic_cast<Room*>(_object);
+
+		if (_currentRoom->IsDark()) 
+		{
+			cout << "It's too dark to see anything in here.";
+			return;
+		} 
+
+		cout << _object->GetDescription() + "\n";
+
 		for (size_t i = 0; i < _object->GetInventory()[ITEM].size(); i++)
 		{
 			cout << "There's an item here: " << _object->GetInventory()[ITEM][i]->GetName() << "\n";
@@ -621,11 +698,29 @@ void GameControl::PrintExamine(Object* _object)
 		{
 			Exit* _currentExit;
 			_currentExit = dynamic_cast<Exit*>(_object->GetInventory()[EXIT][i]);
-			cout << "-" << _currentExit->GetExitType() << ": " << _currentExit->GetName() << "\n";
+
+			string _currentExitType;
+
+			for (auto i = directions.begin(); i != directions.end(); i++)
+			{
+				if (_currentExit->GetExitType() == i->second) 
+				{
+					_currentExitType = i->first;
+					break;
+				} 
+			}
+
+			cout << "-" << InputToNormalized(_currentExitType) << ": " << _currentExit->GetName() << "\n";
 		}
+
+		return;
 	}
-	else if(_object->GetType() == ITEM && _object->IsContainer())
+	
+	cout << _object->GetDescription() + "\n";
+	
+	if(_object->GetType() == ITEM && _object->IsContainer())
 	{
+
 		cout << "Contains:\n";
 		for (size_t i = 0; i < _object->GetInventory()[ITEM].size(); i++)
 		{
