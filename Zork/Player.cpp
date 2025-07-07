@@ -23,7 +23,17 @@ bool Player::SaveObject(string _object)
 
 bool Player::SaveObject(string _object, string _parent, string _recipient)
 {
-	Object* _currentParent = ValidateObject(_parent);
+	Object* _currentParent;
+
+	if (_parent == "Me") 
+	{
+		_currentParent = this;
+	}
+	else 
+	{
+		_currentParent = ValidateObject(_parent);
+	}
+
 	Object* _currentRecipient = currentRoom->ValidateObject(_recipient);
 
 	if (_currentParent != nullptr && _currentRecipient != nullptr)
@@ -52,6 +62,11 @@ bool Player::GoNextRoom(int _dir)
 void Player::SetMute()
 {
 	isHearing = false;
+}
+
+bool Player::IsHearing()
+{
+	return isHearing;
 }
 
 bool Player::hasItemAllready()
