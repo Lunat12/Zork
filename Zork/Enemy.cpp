@@ -6,7 +6,7 @@ Enemy::Enemy(string _name, string _description) : Object(_name, _description)
 	isAsleep = false;
 }
 
-void Enemy::makeSleep()
+void Enemy::MakeSleep()
 {
 	isAsleep = true;
 }

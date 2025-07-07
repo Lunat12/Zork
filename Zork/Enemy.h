@@ -5,7 +5,7 @@ class Enemy : public Object
 public:
 	Enemy(string _name, string _description);
 
-	void makeSleep();
+	void MakeSleep();
 	bool IsAsleep();
 
 private:
