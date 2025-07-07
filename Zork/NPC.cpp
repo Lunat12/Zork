@@ -6,6 +6,7 @@ Npc::Npc(string _name, string _description, Object* _trigger, vector<string*> _d
     dialogs = _dialogs;
     type = NPC;
     state = DEFAULT;
+    currentDialog = *dialogs[0];
 }
 
 int Npc::getState()
@@ -24,17 +25,17 @@ void Npc::ChangeState(Object* _playerObj)
 
     switch (state) {
     case DEFAULT:
-        currentDialog = *dialogs[0];
+        currentDialog = *dialogs[2];
         state = ACTIVE;
         break;
     case ACTIVE:
-        currentDialog = *dialogs[2];
+        currentDialog = *dialogs[3];
         Object::SaveObject(GetName(), _player->GetCurrentRoom()->GetName(), _player->GetName());
         state = FOLLOWING;
         cout << GetName() << " now follows you!";
         break;
     case FOLLOWING:
-        currentDialog = *dialogs[3];
+        currentDialog = *dialogs[2];
         Object::SaveObject(GetName(), _player->GetName(), _player->GetCurrentRoom()->GetName());
         state = ACTIVE;
         cout << GetName() << " will be waiting here.";
