@@ -6,6 +6,7 @@ public:
 	Enemy(string _name, string _description);
 
 	void makeSleep();
+	bool IsAsleep();
 
 private:
 

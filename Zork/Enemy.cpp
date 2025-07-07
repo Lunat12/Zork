@@ -10,3 +10,8 @@ void Enemy::makeSleep()
 {
 	isAsleep = true;
 }
+
+bool Enemy::IsAsleep()
+{
+	return isAsleep;
+}
