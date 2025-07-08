@@ -69,6 +69,8 @@
     <ClInclude Include="Globals.h">
       <Filter>Archivos de origen</Filter>
     </ClInclude>
-    <ClInclude Include="World.h" />
+    <ClInclude Include="World.h">
+      <Filter>Archivos de origen</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
