@@ -337,8 +337,8 @@ GameControl::GameControl(Player* _player)
 			Object* _item = player->ValidateObject(_command[1]);
 			if (_item == nullptr)
 			{
-				_item = player->GetInventory()[ITEM][0]->ValidateObject(_command[1]);
-
+				if(player->GetInventory()[ITEM].size() > 0) _item = player->GetInventory()[ITEM][0]->ValidateObject(_command[1]);
+				
 				if (_item == nullptr)
 				{
 					cout << "You can't use something you don't have.\n";

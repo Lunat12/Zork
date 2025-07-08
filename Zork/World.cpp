@@ -6,7 +6,7 @@ World::World()
 	Spell* hypnodream = new Spell("Hypnodream", "Spell that puts beasts to sleep.", HYPNODREAM);
 	Spell* lumos      = new Spell("Lumos", "Spell that creates light.", LUMOS);
 
-	Object* blinds   = new Object("Blinds", "Great Hall's iconic red blinds.");
+	Object* blinds   = new Object("Blinds", "Great Hall's iconic red blinds. They're huge and seem pretty sturdy.");
 	Object* apple    = new Object("Apple", "Golden apple from the school's garden.");
 	Object* mandrake = new Object("Mandrake", "Really noisy plant, commonly used for potion making.");
 	Object* coins    = new Object("Coins", "These coins were meant to be students's wishes.");
@@ -101,7 +101,7 @@ World::World()
 	Exit* gardenToClass = new Exit("Building", "Northern building.", NORTH , potionClass);
 	Exit* gardenToForest = new Exit("Vines", "Huge vines that guard the entrance to the magical forest.", EAST, water, forest);
 	Exit* gardenToGreenhouse = new Exit("Shaft", "Small glass cabin.", SOUTH, greenhouse);
-	Exit* gardenToUnderWell = new Exit("Well", "Classical water well not featuring any bucket or pulley system. You believe you can hear faint eeire sounds coming from below.", DOWN, blinds, underwell);
+	Exit* gardenToUnderWell = new Exit("Well", "Classical water well not featuring any bucket or pulley system, you could tie something to get down there. You believe you can hear faint eeire sounds coming from below.", DOWN, blinds, underwell);
 
 	garden->LoadExit(gardenToHall);
 	garden->LoadExit(gardenToClass);
