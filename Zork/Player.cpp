@@ -80,7 +80,7 @@ bool Player::GoNextRoom(int _dir)
 		currentRoom = _nextRoom->GetNext();
 		return true;
 	}
-	cout << "This path is inaccessible at the moment.";
+	cout << "This path is inaccessible at the moment.\n";
 	return false;
 
 	

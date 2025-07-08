@@ -47,13 +47,13 @@ void Npc::ChangeState(Object* _playerObj)
         currentDialog = *dialogs[3];
         _player->SaveObject(GetName());
         state = FOLLOWING;
-        cout << Globals_ToNormalized(GetName()) << " now follows you!";
+        cout << Globals_ToNormalized(GetName()) << " now follows you!\n";
         break;
     case FOLLOWING:
         currentDialog = *dialogs[2];
         _player->SaveObject(GetName(), _player->GetName(), _player->GetCurrentRoom()->GetName());
         state = ACTIVE;
-        cout << Globals_ToNormalized(GetName()) << " will be waiting here.";
+        cout << Globals_ToNormalized(GetName()) << " will be waiting here.\n";
         break;
     }
 }

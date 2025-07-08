@@ -10,7 +10,7 @@ extern bool global_mandrakeGiven;
 extern bool global_spellLearned;
 extern bool global_coinsGiven;
 extern bool global_climbedWell;
-extern bool global_syrenDefeated;
+extern bool global_sirenDefeated;
 extern bool global_visitedMagicalForest;
 extern bool global_gotUnicorn;
 

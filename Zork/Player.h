@@ -3,8 +3,6 @@
 #include "Room.h"
 #include "NPC.h"
 
-//class Npc;
-
 class Player : public Object
 {
 public:

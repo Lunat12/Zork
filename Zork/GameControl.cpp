@@ -14,7 +14,7 @@ GameControl::GameControl(Player* _player)
 				if (player->GetCurrentRoom()->GetName() == "HALL" && directions[_command[1]] == NORTH) 
 				{
 
-					cout << "Are you sure you wan't to go to your room and end your adventure?" << "\n";
+					cout << "Are you sure you want to go to your room and end your adventure?" << "\n";
 					if (player->ValidateObject("UNICORN") == nullptr)
 					{
 						cout << "You don't have a unicorn yet...\n";
@@ -33,7 +33,7 @@ GameControl::GameControl(Player* _player)
 					}
 					else if (_input == "NO")
 					{
-						cout << "You decided to stay in the hall\n";
+						cout << "You decided to stay in the hall.\n";
 						return false;
 					}
 					cout << "Not even you could make sense of what you said.\n";
@@ -49,7 +49,7 @@ GameControl::GameControl(Player* _player)
 						if (player->IsHearing()) 
 						{
 							global_dead = true;
-							cout << "You hear an eiree melody. It lures you in it's direction. You seem to walk for a while until you reach the source of the song. Then you can feel something pulling you from bellow.\n";
+							cout << "You hear an eeire melody. It lures you in its direction. You seem to walk for a while until you reach the source of the song. Then you can feel something pulling you from below.\n";
 							cout << "YOU DROWNED.\n";
 							global_end = true;
 							return true;
@@ -121,7 +121,7 @@ GameControl::GameControl(Player* _player)
 				}
 				else
 				{
-					cout << "You allready got that.\n";
+					cout << "You already got that.\n";
 					return false;
 				}
 			}
@@ -135,7 +135,7 @@ GameControl::GameControl(Player* _player)
 				Object* _container = player->ValidateObject(_command[3]);
 				if (_container == nullptr)
 				{
-					cout << "You can't store an item in an object you don't posses.\n";
+					cout << "You can't store an item in an object you don't possess.\n";
 					return false;
 				}
 
@@ -165,11 +165,11 @@ GameControl::GameControl(Player* _player)
 
 					if (player->GetCurrentRoom()->GetName() == "POND" && _item->GetName() == "WATER")
 					{
-						Object* _syrenObj = player->GetCurrentRoom()->ValidateObject("SYREN");
-						Enemy* _syren;
-						_syren = dynamic_cast<Enemy*>(_syrenObj);
+						Object* _sirenObj = player->GetCurrentRoom()->ValidateObject("SIREN");
+						Enemy* _siren;
+						_siren = dynamic_cast<Enemy*>(_sirenObj);
 
-						if (!_syren->IsAsleep())
+						if (!_siren->IsAsleep())
 						{
 							cout << "It might not be a good idea to get near the water now.\n";
 							return false;
@@ -178,7 +178,7 @@ GameControl::GameControl(Player* _player)
 
 					if (_container->ValidateItem(_item->GetName()) == nullptr) 
 					{
-						cout << Globals_ToNormalized(_item->GetName()) << " don't seem to fit well inside of " << Globals_ToNormalized(_container->GetName()) << "\n";
+						cout << Globals_ToNormalized(_item->GetName()) << " don't seem to fit well inside of " << Globals_ToNormalized(_container->GetName()) << ".\n";
 						return false;
 					}
 
@@ -248,7 +248,7 @@ GameControl::GameControl(Player* _player)
 					}
 					else if (_input == "NO") 
 					{
-						cout << Globals_ToNormalized(_npc->GetName()) << " says: Ok!";
+						cout << Globals_ToNormalized(_npc->GetName()) << " says: Ok!\n";
 						return true;
 					}
 					cout << Globals_ToNormalized(_npc->GetName()) << " could not make sense of what you said.\n";
@@ -256,10 +256,10 @@ GameControl::GameControl(Player* _player)
 				}
 				return true;
 			}
-			cout << "You cannot talk to" << Globals_ToNormalized(_command[2]) <<"\n";
+			cout << "You cannot talk to" << Globals_ToNormalized(_command[2]) <<".\n";
 			return false;
 		}
-		cout << "Sorry nobody understood you";
+		cout << "Sorry nobody understood you.\n";
 		return false;
 	};
 	controls["GIVE"] = [&](vector<string> _command) -> bool {
@@ -287,7 +287,7 @@ GameControl::GameControl(Player* _player)
 			_npc = dynamic_cast<Npc*>(_container);
 			if (_npc->GetName() == "POTS" && _npc->GetState() != DEFAULT)
 			{
-				cout << "Pots is not carriying any bag at the momment.\n";
+				cout << "Pots is not carrying any bag at the moment.\n";
 				return false;
 			}
 
@@ -312,7 +312,7 @@ GameControl::GameControl(Player* _player)
 			cout << "You can't give something you don't have.\n";
 			return false;
 		}
-		cout << "You can't go arround giving stuff to things that are not human.\n";
+		cout << "You can't go around giving stuff to things that are not human.\n";
 		return false;
 	};
 	controls["USE"] = [&](vector<string> _command) -> bool {
@@ -388,7 +388,7 @@ GameControl::GameControl(Player* _player)
 			_npc = dynamic_cast<Npc*>(_parent);
 			if (_npc->GetTrigger() == _command[3])
 			{
-				cout << Globals_ToNormalized(_npc->GetName()) << " Says: Sorry I need that.\n";
+				cout << Globals_ToNormalized(_npc->GetName()) << " says: Sorry I need that.\n";
 				return false;
 			}
 
@@ -397,7 +397,7 @@ GameControl::GameControl(Player* _player)
 			{
 				if (_item->GetType() != ITEM || player->hasItemAllready())
 				{
-					cout << _parent->GetName() << " says: You can not carry that.\n";
+					cout << _parent->GetName() << " says: You cannot carry that.\n";
 					return false;
 				}
 				if (player->Object::SaveObject(_item->GetName(), _parent->GetName()))
@@ -435,7 +435,7 @@ GameControl::GameControl(Player* _player)
 
 			if (_spellObj == nullptr)
 			{
-				cout << "Neither you or your party have that spell.\n";
+				cout << "Neither you nor your party has that spell.\n";
 				return false;
 			}	
 		}
@@ -453,7 +453,7 @@ GameControl::GameControl(Player* _player)
 			{
 				if (_spell->Cast(_item)) 
 				{
-					if (_item->GetName() == "SYREN") global_syrenDefeated = true;
+					if (_item->GetName() == "SIREN") global_sirenDefeated = true;
 		
 					return true;
 				}
@@ -471,7 +471,7 @@ GameControl::GameControl(Player* _player)
 			return false;
 			
 		}
-		cout << "That's not any spell you ever heard of.\n";
+		cout << "That's not any spell you've ever heard of.\n";
 		return false;
 	};
 	controls["VERBOSE"] = [&](vector<string> _command) -> bool {
@@ -491,7 +491,7 @@ GameControl::GameControl(Player* _player)
 			return false;
 		}
 		global_isVerbose = false;
-		cout << "Verbose mode deactivated. I will now only full descriptions of rooms you've never been to.\n";
+		cout << "Verbose mode deactivated. I will now only give full descriptions of rooms you've never been to.\n";
 		return false;
 	};
 	controls["EXAMINE"] = [&](vector<string> _command) -> bool {
@@ -554,7 +554,7 @@ GameControl::GameControl(Player* _player)
 		}
 
 		cout << "Your robe pocket contains:\n";
-		cout << Globals_ToNormalized(player->GetInventory()[ITEM][0]->GetName());
+		cout << Globals_ToNormalized(player->GetInventory()[ITEM][0]->GetName()) << "\n";
 		return true;
 	};
 	controls["PARTY"] = [&](vector<string> _command) -> bool {
@@ -566,7 +566,7 @@ GameControl::GameControl(Player* _player)
 
 		if (player->GetInventory()[NPC].size() < 1)
 		{
-			cout << "Nobody is tagging allong.\n";
+			cout << "Nobody is tagging along.\n";
 			return true;
 		}
 
@@ -599,10 +599,10 @@ GameControl::GameControl(Player* _player)
 				cout << "You were not able to learn this spell.\n";
 				return false;
 			}
-			cout << "This is not an spell.\n";
+			cout << "This is not a spell.\n";
 			return false;
 		}
-		cout << "Theres no sutch spell here.\n";
+		cout << "There's no such spell here.\n";
 		return false;
 	};
 	controls["SPELLS"] = [&](vector<string> _command) -> bool {
@@ -633,7 +633,7 @@ GameControl::GameControl(Player* _player)
 		}
 
 		cout << "COMMANDS:\n";
-		cout << "-'GO directtion' Use it to go trough an exit. Directions can ither be:\n";
+		cout << "-'GO direction' Use it to go through an exit. Directions can either be:\n";
 		cout << "	'NORTH\n";
 		cout << "	'SOUTH\n";
 		cout << "	'EAST\n";
@@ -642,20 +642,20 @@ GameControl::GameControl(Player* _player)
 		cout << "	'DOWN\n";
 		cout << "-'STORE item' Use it to store an item in your inventory, you can only carry one. Item corresponds to item name.\n";
 		cout << "-'STORE item IN item' Use it to store an item inside another item. Item corresponds to item name.\n";
-		cout << "-'DROP item' Use it drop an item of your inventory. Item corresponds to item name.\n";
-		cout << "-'SPEAK TO npc' Use it to talk to an npc. Npc corresponds to npc name.\n";
-		cout << "-'GIVE item TO npc' Use it to give an item to an npc. Item corresponds to item name. Npc corresponds to npc name.\n";
+		cout << "-'DROP item' Use it to drop an item from your inventory. Item corresponds to item name.\n";
+		cout << "-'SPEAK TO npc' Use it to talk to an NPC. Npc corresponds to npc name.\n";
+		cout << "-'GIVE item TO npc' Use it to give an item to an NPC. Item corresponds to item name. Npc corresponds to npc name.\n";
 		cout << "-'USE item ON exit' Use it to use an item on an exit. Item corresponds to item name. Exit corresponds to exit name.\n";
-		cout << "-'ASK npc FOR item' Use it to ask an npc who is following you to give you an item of their inventory. Npc corresponds to npc name. Item corresponds to item name.\n";
-		cout << "-'CAST spell ON something' Use it to cast an spell of your own or of your party on something. Spell corresponds to spell name. Something can mean a room, npc... depending on the spell.\n";
-		cout << "-'VERBOSE' Use it to enables long descriptions of all rooms, is active by default.\n";
-		cout << "-'BRIEF' Use it to disables long descriptions of rooms you've allready been to.\n";
-		cout << "-'EXAMINE something' Use it to get information of almost anything in the game.\n";
+		cout << "-'ASK npc FOR item' Use it to ask an NPC who is following you to give you an item from their inventory. Npc corresponds to npc name. Item corresponds to item name.\n";
+		cout << "-'CAST spell ON something' Use it to cast a spell of your own or of your party on something. Spell corresponds to spell name. Something can mean a room, NPC... depending on the spell.\n";
+		cout << "-'VERBOSE' Use it to enable long descriptions of all rooms.\n";
+		cout << "-'BRIEF' Use it to disable long descriptions of rooms you've already been to, it is active by default.\n";
+		cout << "-'EXAMINE something' Use it to get information about almost anything in the game.\n";
 		cout << "-'INVENTORY' Use it to see your inventory.\n";
 		cout << "-'PARTY' Use it to see your party.\n";
-		cout << "-'LEARN spell' Use it to learn an spell form a spellbook. Spell corresponds to spell name.\n";
+		cout << "-'LEARN spell' Use it to learn a spell from a spellbook. Spell corresponds to spell name.\n";
 		cout << "-'SPELLS' Use it to see your spells.\n";
-		cout << "-'HELP' Use it to get the list of commands and its uses.\n";
+		cout << "-'HELP' Use it to get the list of commands and their uses.\n";
 		return true;
 	};
 
@@ -725,6 +725,7 @@ void GameControl::PrintExamine(Object* _object)
 {
 	cout << Globals_ToNormalized(_object->GetName()) + "\n";
 	
+	
 
 	if (_object->GetType() == ROOM) 
 	{
@@ -733,7 +734,7 @@ void GameControl::PrintExamine(Object* _object)
 
 		if (_currentRoom->IsDark()) 
 		{
-			cout << "It's too dark to see anything in here.";
+			cout << "It's too dark to see anything in here.\n";
 			return;
 		} 
 
@@ -773,7 +774,7 @@ void GameControl::PrintExamine(Object* _object)
 				} 
 			}
 
-			cout << "-" << Globals_ToNormalized(_currentExitType) << ": " << Globals_ToNormalized(_currentExit->GetName()) << "\n";
+			cout << "- " << Globals_ToNormalized(_currentExitType) << ": " << Globals_ToNormalized(_currentExit->GetName()) << "\n";
 		}
 
 		return;
@@ -790,7 +791,7 @@ void GameControl::PrintExamine(Object* _object)
 		}
 	
 	}
-	else if(_object->GetType() == NPC)
+	else if (_object->GetType() == NPC)
 	{
 		for (size_t i = 0; i < _object->GetInventory()[ITEM].size(); i++)
 		{
@@ -798,7 +799,9 @@ void GameControl::PrintExamine(Object* _object)
 		}
 		for (size_t i = 0; i < _object->GetInventory()[SPELL].size(); i++)
 		{
-			cout << "Can cast " << Globals_ToNormalized(_object->GetInventory()[SPELL][i]->GetName()) << "\n";
+			{
+				cout << "Can cast " << Globals_ToNormalized(_object->GetInventory()[SPELL][i]->GetName()) << ".\n";
+			}
 		}
 	}
 }

@@ -29,7 +29,7 @@ bool Exit::Trigger(string _triggerName, Object* _parent)
     {
         isActive = true;
         SaveObject(_triggerName, _parent);
-        cout << "You can now go trough " << Globals_ToNormalized(GetName());
+        cout << "You can now go through " << Globals_ToNormalized(GetName()) << ".\n";
         return true;
     }
 

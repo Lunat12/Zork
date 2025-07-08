@@ -8,7 +8,7 @@ bool global_mandrakeGiven;
 bool global_spellLearned;
 bool global_coinsGiven;
 bool global_climbedWell;
-bool global_syrenDefeated;
+bool global_sirenDefeated;
 bool global_visitedMagicalForest;
 bool global_gotUnicorn;
 
