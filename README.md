@@ -1,32 +1,32 @@
-# Zork
-Conversational game based on the game Zork.
+# Black Cat's School of Magic
 
-The objective of this game is to get all the quest points by the end of the game. How to get the perfect score is hidden until completion and won't show up if the player ends up dead, but it should be easy to get by examining everything and completing the main objective: getting a unicorn.
+A C++ console-based text adventure inspired by the original *Zork*, developed as an entrance assessment for my Master's in Programming for AAA Video Games.
 
-The game allows for some extra features like having NPCs follow you around, speaking to them, and using their inventory and skills. 
+The assignment was to create a Zork-style game and include an original gameplay mechanic to demonstrate our C++ programming skills. I chose to set my adventure in a magical school and developed a companion system as its original mechanic.
 
-<br/>
+## About the Game
 
-## Author:
-Natalia Isabel Muñiz Muñoz
+Explore a magical school and its surroundings, interact with characters, collect items and solve puzzles. The main objective is to find a unicorn and complete the adventure. Players can earn up to **80 points** by examining their surroundings and completing interactions along the way.
 
-<br/>
+## Gameplay
 
-## Github Repository:
-https://github.com/Lunat12/Zork
+The game is played through text commands entered into the console. Alongside exploring rooms, examining objects and managing an inventory, the **companion system** lets players recruit NPCs to follow them, carry items and help overcome obstacles with their abilities.
 
-<br/>
+Players can also learn and cast spells to interact with the environment and solve puzzles.
 
-## License:
-Creative Commons Zero v1.0 Universal - CC0-1.0
+## How to Play
 
-<br/>
+A downloadable Windows version is available under [GitHub Releases](https://github.com/Lunat12/Zork/releases/tag/Game).
 
-## Commands:
+Download `NataliaMuniz_Zork.zip`, extract its contents and run the `.exe` file.
+
+The repository also contains the C++ source code and Visual Studio solution (`Zork/Zork.sln`).
+
+## Commands
 - `GO direction` Use it to go through an exit. Directions can either be:
 		NORTH
 		SOUTH
-		EAST;
+		EAST
 		WEST
 		UP
 		DOWN
@@ -47,10 +47,14 @@ Creative Commons Zero v1.0 Universal - CC0-1.0
 - `SPELLS` Use it to see your spells.
 - `HELP` Use it to get the list of commands and their uses.
 
-<br/>
 
-## Step By step - How to get 80/80 points:
-This is a step by step guide on how to end the game with 80 points the fastest, it is not the only way possible, so feel free to try your own path first.
+
+## Walkthrough — 80/80 Points
+
+<details>
+<summary>Show full walkthrough (spoilers)</summary>
+
+This is one possible route to finish with 80 points. Try finding your own path before opening the solution.
 
 Pick up Blinds. `store blinds`
 
@@ -137,3 +141,9 @@ Go to the Hall. `go west`
 Go to the Dorm. `go north`
 
 End the game. `yes`
+
+</details>
+
+## License
+
+Creative Commons Zero v1.0 Universal (CC0-1.0).
